@@ -132,60 +132,38 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207052860.html" itemprop="url">
-		CrossWalk之XWalkView使用</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207053025.html" itemprop="url">
+		Git如何把本地代码推送到远程仓库</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h1 id="toc_0"><a href="https://download.01.org/crosswalk/releases/">XwalkView</a>使用</h1>
+			<h5 id="toc_0">1、 初始化版本库</h5>
 
-<h2 id="toc_1">XwalkView属性配置</h2>
+<pre class="line-numbers"><code class="language-text">$ git init
+</code></pre>
 
-<pre class="line-numbers"><code class="language-java">@SuppressLint(&quot;SetJavaScriptEnabled&quot;)
-    public void init() {
-        if (BuildConfig.DEBUG) {
-            XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
-        }
+<h5 id="toc_1">2、 添加文件到版本库（只是添加到缓存区），.代表添加文件夹下所有文件</h5>
 
-        //声明WebSettings子类
-        XWalkSettings webSettings = getSettings();
-        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
-        webSettings.setJavaScriptEnabled(true);
-        // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
-        // 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
+<pre class="line-numbers"><code class="language-text">$ git add .
+</code></pre>
 
-        //支持插件
-        //webSettings.setPluginsEnabled(true);
+<h5 id="toc_2">3、 把添加的文件提交到版本库，并填写提交备注</h5>
 
-        //设置自适应屏幕，两者合用
-        //将图片调整到适合webview的大小
-        webSettings.setUseWideViewPort(true);
-        //缩放至屏幕的大小
-        webSettings.setLoadWithOverviewMode(true);
+<pre class="line-numbers"><code class="language-text">$ git commit -m &quot;first commit&quot;
+</code></pre>
 
-        //缩放操作
-        //支持缩放，默认为true。是下面那个的前提。
-        webSettings.setSupportZoom(true);
-        //设置内置的缩放控件。若为false，则该WebView不可缩放
-        webSettings.setBuiltInZoomControls(true);
-        //webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+<h5 id="toc_3">4、 把本地库与远程库关联</h5>
 
-        //其他细节操作
-        //关闭webview中缓存
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        //设置可以访问文件
-        webSettings.setAllowFileAccess(true);
-        //支持通过JS打开新窗口
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        //支持自动加载图片
-        webSettings.setLoadsImagesAutomatically(true);
-        //webSettings.setDefaultTextEncodingName(&quot;utf-8&quot;);//设置编码格式
+<pre class="line-numbers"><code class="language-text">$ git remote add origin 远程库地址 
+</code></pre>
 
-        //设置背景为白色
-        setBackgroundColor(Color.WHITE);
-        //设置排序
-        setZOrderOnTop(true);
-        Log.i(&quot;XwalkViewWebContainer&quot;, &quot;Version:&quot; + getXWalkVersion());
-    }
+<h5 id="toc_4">5、 第一次推送时</h5>
+
+<pre class="line-numbers"><code class="language-text">$ git push -u origin master 
+</code></pre>
+
+<h5 id="toc_5">6、第一次推送后，直接使用该命令即可推送修改</h5>
+
+<pre class="line-numbers"><code class="language-text">git push origin master
 </code></pre>
 
 

@@ -132,214 +132,47 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207053701.html" itemprop="url">
-		微信小程序之文件系统初探</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207053843.html" itemprop="url">
+		Android 进程间通讯方式</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h3 id="toc_0">1、文件下载</h3>
+			<h4 id="toc_0">1、通过单向数据管道传递数据</h4>
 
-<pre class="line-numbers"><code class="language-javascript">   //下载文件
-  go_download: function() {
-    var content = this;
-    var baseUrl = &quot;http://rwh.blob.core.chinacloudapi.cn&quot;;
-    var fileName = &quot;1-e2b214af930149ee80c8142d067148a7.exam&quot;;
-    var url = baseUrl + &quot;/data/ExamBuilder2.0/20190320&quot; + &quot;/&quot; + fileName;
+<blockquote>
+<p>管道(使用PipedWriter/ 创建PipedReader)是java.io包的一部分。也就是说，它们是一般的Java功能，而不是Android特定的。管道为同一进程内的两个线程提供了一种连接和建立单向数据通道的方法。生产者线程将数据写入管道，而使用者线程从管道读取数据。</p>
+</blockquote>
 
-    console.log(&quot;dowload url:&quot; + url);
+<h4 id="toc_1">2、共享内存通信</h4>
 
-    //用户缓存目录
-    var userLocalPath = wx.env.USER_DATA_PATH;
-    var localPath = &quot;wxfile://&quot;;
-    var path = userLocalPath + &quot;/&quot; + fileName
-    var localPath = localPath + &quot;/&quot; + fileName
-    var authorization = &quot;Basic ZThlYWJmNWMwN2I0NGI0YmEzOGJmZWMyMTJkM2U1ZDU=&quot;;
-    var apptoken = &quot;Authorization&quot;
+<blockquote>
+<p>共享内存（使用编程中已知的内存区域作为堆）是在线程之间传递信息的常用方法。应用程序中的所有线程都可以访问进程中的相同地址空间。</p>
+</blockquote>
 
-    const downloadTask = wx.downloadFile({
+<h4 id="toc_2">3、实现消费者 - 生产者模式 BlockingQueue</h4>
 
-      // 待下载的云资源
-      url: url,
+<blockquote>
+<p>线程信令是一种低级，高度可配置的机制，可以适应许多用例，但它也可能被认为是最容易出错的技术。因此，Java平台在线程信令机制上构建高级抽象，以解决线程之间的任意对象的单向切换。抽象通常被称为“解决生产者 - 消费者同步问题。”问题包括可能存在生成内容的线程（生产者线程）和消费内容的线程（消费者线程）的用例。生产者将消息传递给消费者进行处理。线程之间的中介是具有阻塞行为的队列，即java.util.concurrent.BlockingQueue。</p>
+</blockquote>
 
-      //下载成功后的回调函数
-      success(res) {
-        console.log(&quot;dowload res.errMsg:&quot; + res.errMsg);
-        console.log(&quot;dowload res.statusCode:&quot; + res.statusCode);
-        console.log(&quot;dowload res.tempFilePath:&quot; + res.tempFilePath);
+<h4 id="toc_3">4、消息队列</h4>
 
-        if (res.statusCode === 200) {
-          wx.showToast({
-            title: &#39;下载成功！&#39;
-          })
-        }
-      },
+<blockquote>
+<p>消息处理机制是Android平台的基础，API位于android.os包中，其中包含一组实现该功能的类Handler。</p>
 
-      //失败回调函数
-      fai: function(res) {
-        console.log(&quot;downloadFile fai:&quot; + res.errMsg)
-      },
+<p>android.os.Looper<br/>
+与唯一的消费者线程关联的消息调度程序。</p>
 
-      //完成回调函数
-      complete: function() {
-        console.log(&quot;downloadFile complete&quot;)
-        content.getReaddir(targPath)
-      }
-    })
+<p>android.os.Handler<br/>
+消费者线程消息处理器，以及生产者线程将消息插入队列的接口。Looper可以有许多关联的处理程序，但它们都将消息插入到同一队列中。</p>
 
-    downloadTask.onProgressUpdate((res) =&gt; {
-      console.log(&#39;下载进度&#39;, res.progress)
-      console.log(&#39;已经下载的数据长度&#39;, res.totalBytesWritten)
-      console.log(&#39;预期需要下载的数据总长度&#39;, res.totalBytesExpectedToWrite)
-    })
+<p>android.os.MessageQueue<br/>
+要在消费者线程上处理的无限链接消息列表。每个Looper和Thread-最多只有一个MessageQueue。</p>
 
-    // downloadTask.abort() // 取消下载任务
+<p>android.os.Message<br/>
+要在使用者线程上执行的消息。</p>
+</blockquote>
 
-  }
-</code></pre>
-
-<h3 id="toc_1">2、持久化文件到本地</h3>
-
-<pre class="line-numbers"><code class="language-text"> //下载成功的文件目前存在temp文件夹下，它属于临时文件
- //如果想要将其持久化，需要使用wx.saveFile()将其保存至store文件夹下，
- //在使用这个函数时，temp文件夹下的临时文件会被删除。
-wx.saveFile({
-   tempFilePath: res.tempFilePath,
-      success: function(res) {
-      console.log(res);
-      var savedFilePath = res.savedFilePath;
-      console.log(&#39;文件已下载到&#39; + savedFilePath);
-    }
- })
-</code></pre>
-
-<h3 id="toc_2">3、解压压缩文件</h3>
-
-<pre class="line-numbers"><code class="language-text">  //解压文件
-  unzipFile: function(path, targPath) {
-    var content = this;
-    console.log(&quot;unzip path:&quot; + path)
-    console.log(&quot;unzip targPath:&quot; + targPath)
-    wx.getFileSystemManager().unzip({
-      //文件路径
-      zipFilePath: path,
-
-      //目标文件夹
-      targetPath: targPath,
-
-      //成功回调函数
-      success: function(res) {
-        console.log(res.errMsg)
-      },
-
-      //失败回调函数
-      fai: function(res) {
-        console.log(&quot;unzip fai:&quot; + res.errMsg)
-      },
-
-      //完成回调函数
-      complete: function() {
-        console.log(&quot;unzip complete&quot;)
-        content.getReaddir(targPath)
-      }
-    });
-  }
-</code></pre>
-
-<h3 id="toc_3">3、读取文件到内存</h3>
-
-<pre class="line-numbers"><code class="language-text">//读取文件
-  readFile: function(path) {
-    console.log(&quot;readFile start path:&quot; + path)
-    var userLocalPath = wx.env.USER_DATA_PATH;
-    wx.getFileSystemManager().readFile({
-      //文件路径
-      filePath: path,
-
-      //成功回调函数
-      success: function(res) {
-        console.log(&quot;unzip success res:&quot; + res.errMsg)
-        console.log(res)
-      },
-
-      //失败回调函数
-      fai: function(res) {
-        console.log(&quot;unzip fai:&quot; + res.errMsg)
-      },
-
-      //完成回调函数
-      complete: function() {
-        console.log(&quot;unzip complete&quot;)
-      }
-    });
-  }
-</code></pre>
-
-<h3 id="toc_4">4、查看目标文件夹的文件列表</h3>
-
-<pre class="line-numbers"><code class="language-javascript"> // 查看下载的文件列表
-  getReaddir: function(path) {
-    console.log(&quot;getReaddir start&quot;)
-    wx.getFileSystemManager().readdir({
-      dirPath: path,
-
-      //成功回调函数
-      success: function(res) {
-        console.log(&quot;getReaddir success res:&quot; + res.errMsg)
-        console.log(res)
-      },
-
-      //失败回调函数
-      fai: function(res) {
-        console.log(&quot;getReaddir fai:&quot; + res.errMsg)
-      },
-
-      //完成回调函数
-      complete: function() {
-        console.log(&quot;getReaddir complete&quot;)
-      }
-    })
-  }
-</code></pre>
-
-<h3 id="toc_5">5、查看已经缓存的文件列表</h3>
-
-<pre class="line-numbers"><code class="language-javascript"> // 查看下载的文件列表
-  getUserSavedFileList: function() {
-    console.log(&quot;getUserSavedFileList start&quot;)
-    wx.getFileSystemManager().getSavedFileList({
-      //成功回调函数
-      success: function(res) {
-        console.log(&quot;getUserSavedFileList success res:&quot; + res)
-        console.log(res)
-      },
-
-      //失败回调函数
-      fai: function(res) {
-        console.log(&quot;getUserSavedFileList fai:&quot; + res.errMsg)
-      },
-
-      //完成回调函数
-      complete: function() {
-        console.log(&quot;getUserSavedFileList complete&quot;)
-      }
-    })
-  }
-</code></pre>
-
-<div id="container"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-  id: '页面 ID', // 可选。默认为 location.href
-  owner: 'hejing-michael',
-  repo: 'https://github.com/hejing-michael/blogs.git',
-  oauth: {
-    client_id: '5f1faab16a5237bb0a94',
-    client_secret: '5eac0da7e57e780a461bc4cba7f8a9a31c357a0f',
-  },
-})
-gitment.render('container')
-</script>
+<p><a href="https://www.oreilly.com/library/view/efficient-android-threading/9781449364120/ch04.html">原文链接</a></p>
 
 
 			

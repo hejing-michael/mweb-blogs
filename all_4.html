@@ -132,66 +132,85 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207052100.html" itemprop="url">
-		单例模式</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207052214.html" itemprop="url">
+		多线程`同步`有几种方式</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<blockquote>
-<p>本文摘自维基百科</p>
-</blockquote>
-
-<p><strong>单例模式，也叫单子模式</strong>，是一种常用的软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。<br/>
- —— <a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">维基百科</a></p>
-
-<p><strong>实现单例模式的思路</strong>：一个类能返回对象一个引用(永远是同一个)和一个获得该实例的方法（必须是静态方法，通常使用getInstance这个名称）；当我们调用这个方法时，如果类持有的引用不为空就返回这个引用，如果类保持的引用为空就创建该类的实例并将实例的引用赋予该类保持的引用；同时我们还将该类的构造函数定义为私有方法，这样其他处的代码就无法通过调用该类的构造函数来实例化该类的对象，只有通过该类提供的静态方法来得到该类的唯一实例。</p>
-
-<p>通常单例模式在Java语言中，有两种构建方式：</p>
+			<h4 id="toc_0">1、使用synchronized（可同步代码片段也可同步整个函数）</h4>
 
 <ul>
-<li><strong>懒汉方式</strong>：指全局的单例实例在第一次被使用时构建。</li>
-<li><strong>饿汉方式</strong>：指全局的单例实例在类装载时构建。</li>
+<li><strong>synchronized关键字修饰的方法</strong>。
+由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
+内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。<br/>
+即有synchronized关键字修饰的方法。<br/>
+由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
+内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</li>
 </ul>
 
-<p>Java<br/>
-在Java语言中，单例模式(饿汉模式)应用的例子如下述代码所示：</p>
+<p>代码如:</p>
 
-<pre class="line-numbers"><code class="language-text">  public class Singleton {
-    private final static Singleton INSTANCE = new Singleton();
-  
-    // Private constructor suppresses   
-    private Singleton() {}
- 
-    // default public constructor
-    public static Singleton getInstance() {
-        return INSTANCE;
+<pre class="line-numbers"><code class="language-text">   public synchronized void test(){
     }
-  }
 </code></pre>
 
-<p>在Java编程语言中，单例模式(懒汉模式)应用的例子如下述代码所示 (此种方法只能用在JDK5及以后版本(注意 INSTANCE 被声明为 volatile)，之前的版本使用“双重检查锁”会发生非预期行为[1])：</p>
+<blockquote>
+<p>注： synchronized关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类</p>
+</blockquote>
 
-<pre class="line-numbers"><code class="language-text">
-  public class Singleton {
-    private static volatile Singleton INSTANCE = null;
-  
-    // Private constructor suppresses 
-    // default public constructor
-    private Singleton() {}
-  
-    //thread safe and performance  promote 
-    public static  Singleton getInstance() {
-        if(INSTANCE == null){
-             synchronized(Singleton.class){
-                 //when more than two threads run into the first null check same time, to avoid instanced more than one time, it needs to be checked again.
-                 if(INSTANCE == null){ 
-                     INSTANCE = new Singleton();
-                  }
-              } 
-        }
-        return INSTANCE;
-    }
-  }
+<ul>
+<li><strong>synchronized同步代码块</strong>
+即有synchronized关键字修饰的语句块。<br/>
+被该关键字修饰的语句块会自动被加上内置锁，从而实现同步</li>
+</ul>
+
+<p>代码如： </p>
+
+<pre class="line-numbers"><code class="language-text">synchronized(object){ 
+}
 </code></pre>
+
+<blockquote>
+<p>注：同步是一种高开销的操作，因此应该尽量减少同步的内容。<br/>
+通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可。</p>
+</blockquote>
+
+<h4 id="toc_1">2、使用重入锁实现线程同步</h4>
+
+<p>在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。<br/>
+ReentrantLock类是可重入、互斥、实现了Lock接口的锁，<br/>
+它与使用synchronized方法和快具有相同的基本行为和语义，并且扩展了其能力。<br/>
+ReenreantLock类的常用方法有：</p>
+
+<ul>
+<li><strong>ReentrantLock()</strong> : 创建一个ReentrantLock实例</li>
+<li><strong>lock()</strong> : 获得锁</li>
+<li><p>**unlock() **: 释放锁</p>
+<pre class="line-numbers"><code class="language-java">class Bank {
+        private int account = 100;<br/>
+        //需要声明这个锁<br/>
+        private Lock lock = new ReentrantLock();<br/>
+        public int getAccount() {<br/>
+            return account;<br/>
+        }<br/>
+        //这里不再需要synchronized <br/>
+        public void save(int money) {<br/>
+            lock.lock();<br/>
+            try{<br/>
+                account += money;<br/>
+            }finally{<br/>
+                lock.unlock();<br/>
+            }<br/>
+        }<br/>
+    ｝
+</code></pre>
+<blockquote>
+<p>注：关于Lock对象和synchronized关键字的选择：<br/>
+a.最好两个都不用，使用一种java.util.concurrent包提供的机制，<br/>
+能够帮助用户处理所有与锁相关的代码。<br/>
+b.如果synchronized关键字能满足用户的需求，就用synchronized，因为它能简化代码<br/>
+c.如果需要更高级的功能，就用ReentrantLock类，此时要注意及时释放锁，否则会出现死锁，通常在finally代码释放锁</p>
+</blockquote></li>
+</ul>
 
 
 			

@@ -132,102 +132,43 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207052530.html" itemprop="url">
-		责任链模式</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207052689.html" itemprop="url">
+		Android系统WebView使用</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<p><strong>责任链模式：</strong>责任链模式在面向对象程式设计里是一种软件设计模式，它包含了一些命令对象和一系列的处理对象。每一个处理对象决定它能处理哪些命令对象，它也知道如何将它不能处理的命令对象传递给该链中的下一个处理对象。该模式还描述了往该处理链的末尾添加新的处理对象的方法。---维基百科</p>
+			<h1 id="toc_0"><a href="https://developer.android.com/guide/webapps/managing-webview?hl=zh_cn">Android系统WebView</a>使用</h1>
 
-<pre class="line-numbers"><code class="language-java">import java.util.*;
+<h2 id="toc_1">WebView属性配置</h2>
 
-abstract class Logger 
-{
-    public static int ERR = 3;
-    public static int NOTICE = 5;
-    public static int DEBUG = 7;
-    protected int mask;
-
-    // The next element in the chain of responsibility
-    protected Logger next;
-    public Logger setNext( Logger l)
-    {
-        next = l;
-        return this;
-    }
-
-    public final void message( String msg, int priority )
-    {
-        if ( priority &lt;= mask ) 
-        {
-            writeMessage( msg );
-            if ( next != null )
-            {
-                next.message( msg, priority );
-            }
+<pre class="line-numbers"><code class="language-java">public void init() {
+        if (BuildConfig.DEBUG) {
+            setWebContentsDebuggingEnabled(true);
         }
-    }
-    
-    protected abstract void writeMessage( String msg );
+        //声明WebSettings子类
+        WebSettings webSettings = getSettings();
+        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
+        webSettings.setJavaScriptEnabled(true);
+        // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
+        // 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
 
-}
-</code></pre>
+        //支持插件
+        //webSettings.setPluginsEnabled(true);
 
-<pre class="line-numbers"><code class="language-java">
-class StdoutLogger extends Logger 
-{
+        //设置自适应屏幕，两者合用
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
-    public StdoutLogger( int mask ) { this.mask = mask; }
+        //缩放操作
+        webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
+        webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
+        webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
 
-    protected void writeMessage( String msg )
-    {
-        System.out.println( &quot;Writting to stdout: &quot; + msg );
-    }
-}
-
-</code></pre>
-
-<pre class="line-numbers"><code class="language-java">class EmailLogger extends Logger 
-{
-
-    public EmailLogger( int mask ) { this.mask = mask; }
-
-    protected void writeMessage( String msg )
-    {
-        System.out.println( &quot;Sending via email: &quot; + msg );
-    }
-}
-</code></pre>
-
-<pre class="line-numbers"><code class="language-java">class StderrLogger extends Logger 
-{
-
-    public StderrLogger( int mask ) { this.mask = mask; }
-
-    protected void writeMessage( String msg )
-    {
-        System.out.println( &quot;Sending to stderr: &quot; + msg );
-    }
-}
-</code></pre>
-
-<pre class="line-numbers"><code class="language-java">public class ChainOfResponsibilityExample
-{
-    public static void main( String[] args )
-    {
-        // Build the chain of responsibility
-        Logger l = new StdoutLogger( Logger.DEBUG).setNext(
-                            new EmailLogger( Logger.NOTICE ).setNext(
-                            new StderrLogger( Logger.ERR ) ) );
-
-        // Handled by StdoutLogger
-        l.message( &quot;Entering function y.&quot;, Logger.DEBUG );
-
-        // Handled by StdoutLogger and EmailLogger
-        l.message( &quot;Step1 completed.&quot;, Logger.NOTICE );
-
-        // Handled by all three loggers
-        l.message( &quot;An error has occurred.&quot;, Logger.ERR );
-    }
+        //其他细节操作
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存
+        webSettings.setAllowFileAccess(true); //设置可以访问文件
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
+        webSettings.setDefaultTextEncodingName(&quot;utf-8&quot;);//设置编码格式
 }
 </code></pre>
 

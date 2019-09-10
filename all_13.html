@@ -132,28 +132,214 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207053538.html" itemprop="url">
-		类加载机制之验证</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207053701.html" itemprop="url">
+		微信小程序之文件系统初探</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<blockquote>
-<p>原文链接：<a href="https://blog.csdn.net/ns_code/article/details/17881581">https://blog.csdn.net/ns_code/article/details/17881581</a></p>
-</blockquote>
+			<h3 id="toc_0">1、文件下载</h3>
 
-<h4 id="toc_0">目的</h4>
+<pre class="line-numbers"><code class="language-javascript">   //下载文件
+  go_download: function() {
+    var content = this;
+    var baseUrl = &quot;http://rwh.blob.core.chinacloudapi.cn&quot;;
+    var fileName = &quot;1-e2b214af930149ee80c8142d067148a7.exam&quot;;
+    var url = baseUrl + &quot;/data/ExamBuilder2.0/20190320&quot; + &quot;/&quot; + fileName;
 
-<p>验证的目的是为了确保Class文件中的字节流包含的信息符合当前虚拟机的要求，而且不会危害虚拟机自身的安全。</p>
+    console.log(&quot;dowload url:&quot; + url);
 
-<h4 id="toc_1">目标</h4>
+    //用户缓存目录
+    var userLocalPath = wx.env.USER_DATA_PATH;
+    var localPath = &quot;wxfile://&quot;;
+    var path = userLocalPath + &quot;/&quot; + fileName
+    var localPath = localPath + &quot;/&quot; + fileName
+    var authorization = &quot;Basic ZThlYWJmNWMwN2I0NGI0YmEzOGJmZWMyMTJkM2U1ZDU=&quot;;
+    var apptoken = &quot;Authorization&quot;
 
-<p>不同的虚拟机对类验证的实现可能会有所不同，但大致都会完成以下四个阶段的验证：<code>文件格式的验证</code>、<code>元数据的验证</code>、<code>字节码验证</code>和<code>符号引用验证</code>。</p>
+    const downloadTask = wx.downloadFile({
 
-<ul>
-<li><p><strong>文件格式的验证</strong>：验证字节流是否符合Class文件格式的规范，并且能被当前版本的虚拟机处理，该验证的主要目的是保证输入的字节流能正确地解析并存储于方法区之内。经过该阶段的验证后，字节流才会进入内存的方法区中进行存储，后面的三个验证都是基于方法区的存储结构进行的。</p></li>
-<li><p><strong>元数据验证</strong>：对类的元数据信息进行语义校验（其实就是对类中的各数据类型进行语法校验），保证不存在不符合Java语法规范的元数据信息。</p></li>
-<li><p><strong>字节码验证</strong>：该阶段验证的主要工作是进行数据流和控制流分析，对类的方法体进行校验分析，以保证被校验的类的方法在运行时不会做出危害虚拟机安全的行为。</p></li>
-<li><p><strong>符号引用验证</strong>：这是最后一个阶段的验证，它发生在虚拟机将符号引用转化为直接引用的时候（解析阶段中发生该转化，后面会有讲解），主要是对类自身以外的信息（常量池中的各种符号引用）进行匹配性的校验。</p></li>
-</ul>
+      // 待下载的云资源
+      url: url,
+
+      //下载成功后的回调函数
+      success(res) {
+        console.log(&quot;dowload res.errMsg:&quot; + res.errMsg);
+        console.log(&quot;dowload res.statusCode:&quot; + res.statusCode);
+        console.log(&quot;dowload res.tempFilePath:&quot; + res.tempFilePath);
+
+        if (res.statusCode === 200) {
+          wx.showToast({
+            title: &#39;下载成功！&#39;
+          })
+        }
+      },
+
+      //失败回调函数
+      fai: function(res) {
+        console.log(&quot;downloadFile fai:&quot; + res.errMsg)
+      },
+
+      //完成回调函数
+      complete: function() {
+        console.log(&quot;downloadFile complete&quot;)
+        content.getReaddir(targPath)
+      }
+    })
+
+    downloadTask.onProgressUpdate((res) =&gt; {
+      console.log(&#39;下载进度&#39;, res.progress)
+      console.log(&#39;已经下载的数据长度&#39;, res.totalBytesWritten)
+      console.log(&#39;预期需要下载的数据总长度&#39;, res.totalBytesExpectedToWrite)
+    })
+
+    // downloadTask.abort() // 取消下载任务
+
+  }
+</code></pre>
+
+<h3 id="toc_1">2、持久化文件到本地</h3>
+
+<pre class="line-numbers"><code class="language-text"> //下载成功的文件目前存在temp文件夹下，它属于临时文件
+ //如果想要将其持久化，需要使用wx.saveFile()将其保存至store文件夹下，
+ //在使用这个函数时，temp文件夹下的临时文件会被删除。
+wx.saveFile({
+   tempFilePath: res.tempFilePath,
+      success: function(res) {
+      console.log(res);
+      var savedFilePath = res.savedFilePath;
+      console.log(&#39;文件已下载到&#39; + savedFilePath);
+    }
+ })
+</code></pre>
+
+<h3 id="toc_2">3、解压压缩文件</h3>
+
+<pre class="line-numbers"><code class="language-text">  //解压文件
+  unzipFile: function(path, targPath) {
+    var content = this;
+    console.log(&quot;unzip path:&quot; + path)
+    console.log(&quot;unzip targPath:&quot; + targPath)
+    wx.getFileSystemManager().unzip({
+      //文件路径
+      zipFilePath: path,
+
+      //目标文件夹
+      targetPath: targPath,
+
+      //成功回调函数
+      success: function(res) {
+        console.log(res.errMsg)
+      },
+
+      //失败回调函数
+      fai: function(res) {
+        console.log(&quot;unzip fai:&quot; + res.errMsg)
+      },
+
+      //完成回调函数
+      complete: function() {
+        console.log(&quot;unzip complete&quot;)
+        content.getReaddir(targPath)
+      }
+    });
+  }
+</code></pre>
+
+<h3 id="toc_3">3、读取文件到内存</h3>
+
+<pre class="line-numbers"><code class="language-text">//读取文件
+  readFile: function(path) {
+    console.log(&quot;readFile start path:&quot; + path)
+    var userLocalPath = wx.env.USER_DATA_PATH;
+    wx.getFileSystemManager().readFile({
+      //文件路径
+      filePath: path,
+
+      //成功回调函数
+      success: function(res) {
+        console.log(&quot;unzip success res:&quot; + res.errMsg)
+        console.log(res)
+      },
+
+      //失败回调函数
+      fai: function(res) {
+        console.log(&quot;unzip fai:&quot; + res.errMsg)
+      },
+
+      //完成回调函数
+      complete: function() {
+        console.log(&quot;unzip complete&quot;)
+      }
+    });
+  }
+</code></pre>
+
+<h3 id="toc_4">4、查看目标文件夹的文件列表</h3>
+
+<pre class="line-numbers"><code class="language-javascript"> // 查看下载的文件列表
+  getReaddir: function(path) {
+    console.log(&quot;getReaddir start&quot;)
+    wx.getFileSystemManager().readdir({
+      dirPath: path,
+
+      //成功回调函数
+      success: function(res) {
+        console.log(&quot;getReaddir success res:&quot; + res.errMsg)
+        console.log(res)
+      },
+
+      //失败回调函数
+      fai: function(res) {
+        console.log(&quot;getReaddir fai:&quot; + res.errMsg)
+      },
+
+      //完成回调函数
+      complete: function() {
+        console.log(&quot;getReaddir complete&quot;)
+      }
+    })
+  }
+</code></pre>
+
+<h3 id="toc_5">5、查看已经缓存的文件列表</h3>
+
+<pre class="line-numbers"><code class="language-javascript"> // 查看下载的文件列表
+  getUserSavedFileList: function() {
+    console.log(&quot;getUserSavedFileList start&quot;)
+    wx.getFileSystemManager().getSavedFileList({
+      //成功回调函数
+      success: function(res) {
+        console.log(&quot;getUserSavedFileList success res:&quot; + res)
+        console.log(res)
+      },
+
+      //失败回调函数
+      fai: function(res) {
+        console.log(&quot;getUserSavedFileList fai:&quot; + res.errMsg)
+      },
+
+      //完成回调函数
+      complete: function() {
+        console.log(&quot;getUserSavedFileList complete&quot;)
+      }
+    })
+  }
+</code></pre>
+
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '页面 ID', // 可选。默认为 location.href
+  owner: 'hejing-michael',
+  repo: 'https://github.com/hejing-michael/blogs.git',
+  oauth: {
+    client_id: '5f1faab16a5237bb0a94',
+    client_secret: '5eac0da7e57e780a461bc4cba7f8a9a31c357a0f',
+  },
+})
+gitment.render('container')
+</script>
 
 
 			

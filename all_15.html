@@ -132,47 +132,23 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207053843.html" itemprop="url">
-		Android 进程间通讯方式</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207053993.html" itemprop="url">
+		Git回滚代码到某个commit</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h4 id="toc_0">1、通过单向数据管道传递数据</h4>
+			<h3 id="toc_0">回退命令：</h3>
 
-<blockquote>
-<p>管道(使用PipedWriter/ 创建PipedReader)是java.io包的一部分。也就是说，它们是一般的Java功能，而不是Android特定的。管道为同一进程内的两个线程提供了一种连接和建立单向数据通道的方法。生产者线程将数据写入管道，而使用者线程从管道读取数据。</p>
-</blockquote>
+<pre class="line-numbers"><code class="language-text"> $git reset --hard HEAD^      回退到上个版本  
+ $git reset --hard HEAD~3     回退三次提交
+ $git reset --hard commit-id  退到/进到指定commit
+</code></pre>
 
-<h4 id="toc_1">2、共享内存通信</h4>
+<h3 id="toc_1">强推到远程：</h3>
 
-<blockquote>
-<p>共享内存（使用编程中已知的内存区域作为堆）是在线程之间传递信息的常用方法。应用程序中的所有线程都可以访问进程中的相同地址空间。</p>
-</blockquote>
+<pre class="line-numbers"><code class="language-text"> $git push origin HEAD --force 
+</code></pre>
 
-<h4 id="toc_2">3、实现消费者 - 生产者模式 BlockingQueue</h4>
-
-<blockquote>
-<p>线程信令是一种低级，高度可配置的机制，可以适应许多用例，但它也可能被认为是最容易出错的技术。因此，Java平台在线程信令机制上构建高级抽象，以解决线程之间的任意对象的单向切换。抽象通常被称为“解决生产者 - 消费者同步问题。”问题包括可能存在生成内容的线程（生产者线程）和消费内容的线程（消费者线程）的用例。生产者将消息传递给消费者进行处理。线程之间的中介是具有阻塞行为的队列，即java.util.concurrent.BlockingQueue。</p>
-</blockquote>
-
-<h4 id="toc_3">4、消息队列</h4>
-
-<blockquote>
-<p>消息处理机制是Android平台的基础，API位于android.os包中，其中包含一组实现该功能的类Handler。</p>
-
-<p>android.os.Looper<br/>
-与唯一的消费者线程关联的消息调度程序。</p>
-
-<p>android.os.Handler<br/>
-消费者线程消息处理器，以及生产者线程将消息插入队列的接口。Looper可以有许多关联的处理程序，但它们都将消息插入到同一队列中。</p>
-
-<p>android.os.MessageQueue<br/>
-要在消费者线程上处理的无限链接消息列表。每个Looper和Thread-最多只有一个MessageQueue。</p>
-
-<p>android.os.Message<br/>
-要在使用者线程上执行的消息。</p>
-</blockquote>
-
-<p><a href="https://www.oreilly.com/library/view/efficient-android-threading/9781449364120/ch04.html">原文链接</a></p>
+<p><a href="https://www.cnblogs.com/shanyou/p/7907781.html">相关链接</a></p>
 
 
 			
@@ -185,7 +161,7 @@
 </div>
 <nav id="pagenavi">
 	 <a class="prev" href="all_14.html">Prev</a>  
-	 <a class="next" href="all_16.html">Next</a> 
+	
 	<div class="center"><a href="archives.html">Blog Archives</a></div>
 
 </nav>

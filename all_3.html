@@ -132,52 +132,66 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207051984.html" itemprop="url">
-		Android之ImageView宽高适配</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207052100.html" itemprop="url">
+		单例模式</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h1 id="toc_0">Android ImageView图片宽度为控件宽度，高度按比例缩放</h1>
+			<blockquote>
+<p>本文摘自维基百科</p>
+</blockquote>
 
-<h2 id="toc_1">实现方式</h2>
+<p><strong>单例模式，也叫单子模式</strong>，是一种常用的软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。<br/>
+ —— <a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">维基百科</a></p>
 
-<h3 id="toc_2">在Java代码里面实现</h3>
+<p><strong>实现单例模式的思路</strong>：一个类能返回对象一个引用(永远是同一个)和一个获得该实例的方法（必须是静态方法，通常使用getInstance这个名称）；当我们调用这个方法时，如果类持有的引用不为空就返回这个引用，如果类保持的引用为空就创建该类的实例并将实例的引用赋予该类保持的引用；同时我们还将该类的构造函数定义为私有方法，这样其他处的代码就无法通过调用该类的构造函数来实例化该类的对象，只有通过该类提供的静态方法来得到该类的唯一实例。</p>
 
-<p>首先，定义ImageView，在该ImageView中，我们需要设置属性android:adjustViewBounds=&quot;true&quot;，他的意思图片是否保持宽高比。切记的一点是该属性需要与maxWidth、MaxHeight一起使用，否则单独使用没有效果。 </p>
+<p>通常单例模式在Java语言中，有两种构建方式：</p>
 
-<pre class="line-numbers"><code class="language-markup"> &lt;ImageView
-        android:id=&quot;@+id/img_list&quot;
-        android:layout_width=&quot;fill_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:scaleType=&quot;centerCrop&quot;
-        android:adjustViewBounds=&quot;true&quot;
-        android:src=&quot;@drawable/load_default_img&quot; /&gt;
-</code></pre>
+<ul>
+<li><strong>懒汉方式</strong>：指全局的单例实例在第一次被使用时构建。</li>
+<li><strong>饿汉方式</strong>：指全局的单例实例在类装载时构建。</li>
+</ul>
 
-<p>刚刚说了，android:adjustViewBounds=&quot;true&quot;必须与MaxHeight一起使用才能有效，所以，我要设置该ImageView的最大高度MaxHeight：</p>
+<p>Java<br/>
+在Java语言中，单例模式(饿汉模式)应用的例子如下述代码所示：</p>
 
-<pre class="line-numbers"><code class="language-java">int screenWidth = getScreenWidth(this); // 获取屏幕宽度
-ViewGroup.LayoutParams lp = testImage.getLayoutParams();
-lp.width = screenWidth;
-lp.height = LayoutParams.WRAP_CONTENT;
-testImage.setLayoutParams(lp);
+<pre class="line-numbers"><code class="language-text">  public class Singleton {
+    private final static Singleton INSTANCE = new Singleton();
+  
+    // Private constructor suppresses   
+    private Singleton() {}
  
-testImage.setMaxWidth(screenWidth);
-testImage.setMaxHeight(screenWidth * 5); //这里其实可以根据需求而定，我这里测试为最大宽度的5倍
+    // default public constructor
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+  }
 </code></pre>
 
-<h3 id="toc_3">在Xml中实现</h3>
+<p>在Java编程语言中，单例模式(懒汉模式)应用的例子如下述代码所示 (此种方法只能用在JDK5及以后版本(注意 INSTANCE 被声明为 volatile)，之前的版本使用“双重检查锁”会发生非预期行为[1])：</p>
 
-<pre class="line-numbers"><code class="language-markup">  &lt;ImageView
-        android:layout_width=&quot;match_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:scaleType=&quot;centerCrop&quot;
-        android:adjustViewBounds=&quot;true&quot;
-        android:src=&quot;@drawable/ic_login_bg&quot; /&gt;
+<pre class="line-numbers"><code class="language-text">
+  public class Singleton {
+    private static volatile Singleton INSTANCE = null;
+  
+    // Private constructor suppresses 
+    // default public constructor
+    private Singleton() {}
+  
+    //thread safe and performance  promote 
+    public static  Singleton getInstance() {
+        if(INSTANCE == null){
+             synchronized(Singleton.class){
+                 //when more than two threads run into the first null check same time, to avoid instanced more than one time, it needs to be checked again.
+                 if(INSTANCE == null){ 
+                     INSTANCE = new Singleton();
+                  }
+              } 
+        }
+        return INSTANCE;
+    }
+  }
 </code></pre>
-
-<h2 id="toc_4">参考：</h2>
-
-<p>1、<a href="https://blog.csdn.net/zuiwuyuan/article/details/49285853">Android 设置ImageView宽度固定，其高度按比例缩放适应</a></p>
 
 
 			

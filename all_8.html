@@ -132,20 +132,22 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207052689.html" itemprop="url">
-		Android系统WebView使用</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207052860.html" itemprop="url">
+		CrossWalk之XWalkView使用</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h1 id="toc_0"><a href="https://developer.android.com/guide/webapps/managing-webview?hl=zh_cn">Android系统WebView</a>使用</h1>
+			<h1 id="toc_0"><a href="https://download.01.org/crosswalk/releases/">XwalkView</a>使用</h1>
 
-<h2 id="toc_1">WebView属性配置</h2>
+<h2 id="toc_1">XwalkView属性配置</h2>
 
-<pre class="line-numbers"><code class="language-java">public void init() {
+<pre class="line-numbers"><code class="language-java">@SuppressLint(&quot;SetJavaScriptEnabled&quot;)
+    public void init() {
         if (BuildConfig.DEBUG) {
-            setWebContentsDebuggingEnabled(true);
+            XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
         }
+
         //声明WebSettings子类
-        WebSettings webSettings = getSettings();
+        XWalkSettings webSettings = getSettings();
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
         webSettings.setJavaScriptEnabled(true);
         // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
@@ -155,21 +157,35 @@
         //webSettings.setPluginsEnabled(true);
 
         //设置自适应屏幕，两者合用
-        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        //将图片调整到适合webview的大小
+        webSettings.setUseWideViewPort(true);
+        //缩放至屏幕的大小
+        webSettings.setLoadWithOverviewMode(true);
 
         //缩放操作
-        webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
-        webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
-        webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        //支持缩放，默认为true。是下面那个的前提。
+        webSettings.setSupportZoom(true);
+        //设置内置的缩放控件。若为false，则该WebView不可缩放
+        webSettings.setBuiltInZoomControls(true);
+        //webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
 
         //其他细节操作
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存
-        webSettings.setAllowFileAccess(true); //设置可以访问文件
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
-        webSettings.setDefaultTextEncodingName(&quot;utf-8&quot;);//设置编码格式
-}
+        //关闭webview中缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        //设置可以访问文件
+        webSettings.setAllowFileAccess(true);
+        //支持通过JS打开新窗口
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        //支持自动加载图片
+        webSettings.setLoadsImagesAutomatically(true);
+        //webSettings.setDefaultTextEncodingName(&quot;utf-8&quot;);//设置编码格式
+
+        //设置背景为白色
+        setBackgroundColor(Color.WHITE);
+        //设置排序
+        setZOrderOnTop(true);
+        Log.i(&quot;XwalkViewWebContainer&quot;, &quot;Version:&quot; + getXWalkVersion());
+    }
 </code></pre>
 
 

@@ -132,85 +132,65 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207052214.html" itemprop="url">
-		多线程`同步`有几种方式</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207052372.html" itemprop="url">
+		微信X5之WebView使用</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h4 id="toc_0">1、使用synchronized（可同步代码片段也可同步整个函数）</h4>
+			<h1 id="toc_0"><a href="https://x5.tencent.com/tbs/index.html">微信X5之WebView</a>使用</h1>
 
-<ul>
-<li><strong>synchronized关键字修饰的方法</strong>。
-由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
-内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。<br/>
-即有synchronized关键字修饰的方法。<br/>
-由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
-内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</li>
-</ul>
+<h2 id="toc_1">X5之WebView属性配置</h2>
 
-<p>代码如:</p>
+<pre class="line-numbers"><code class="language-java">    private WebViewClient client = new WebViewClient() {
+        /**
+         * 防止加载网页时调起系统浏览器
+         */
+        public boolean shouldOverrideUrlLoading(WebView view, String url)   {
+            view.loadUrl(url);
+            return true;
+        }
+    };
 
-<pre class="line-numbers"><code class="language-text">   public synchronized void test(){
+    public X5WebView(Context arg0) {
+        super(arg0);
+        setBackgroundColor(85621);
     }
+
+    @SuppressLint(&quot;SetJavaScriptEnabled&quot;)
+    public X5WebView(Context arg0, AttributeSet arg1) {
+        super(arg0, arg1);
+        this.setWebViewClient(client);
+        // this.setWebChromeClient(chromeClient);
+        // WebStorage webStorage = WebStorage.getInstance();
+        initWebViewSettings();
+        this.getView().setClickable(true);
+    }
+
+    private void initWebViewSettings() {
+        WebSettings webSetting = this.getSettings();
+        webSetting.setJavaScriptEnabled(true);
+        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSetting.setAllowFileAccess(true);
+        webSetting.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+        webSetting.setSupportZoom(true);
+        webSetting.setBuiltInZoomControls(true);
+        webSetting.setUseWideViewPort(true);
+        webSetting.setSupportMultipleWindows(true);
+        // webSetting.setLoadWithOverviewMode(true);
+        webSetting.setAppCacheEnabled(true);
+        // webSetting.setDatabaseEnabled(true);
+        webSetting.setDomStorageEnabled(true);
+        webSetting.setGeolocationEnabled(true);
+        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+        // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
+        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+        // webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        // this.getSettingsExtension().setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);//extension
+        // settings 的设计
+    }
+
 </code></pre>
-
-<blockquote>
-<p>注： synchronized关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类</p>
-</blockquote>
-
-<ul>
-<li><strong>synchronized同步代码块</strong>
-即有synchronized关键字修饰的语句块。<br/>
-被该关键字修饰的语句块会自动被加上内置锁，从而实现同步</li>
-</ul>
-
-<p>代码如： </p>
-
-<pre class="line-numbers"><code class="language-text">synchronized(object){ 
-}
-</code></pre>
-
-<blockquote>
-<p>注：同步是一种高开销的操作，因此应该尽量减少同步的内容。<br/>
-通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可。</p>
-</blockquote>
-
-<h4 id="toc_1">2、使用重入锁实现线程同步</h4>
-
-<p>在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。<br/>
-ReentrantLock类是可重入、互斥、实现了Lock接口的锁，<br/>
-它与使用synchronized方法和快具有相同的基本行为和语义，并且扩展了其能力。<br/>
-ReenreantLock类的常用方法有：</p>
-
-<ul>
-<li><strong>ReentrantLock()</strong> : 创建一个ReentrantLock实例</li>
-<li><strong>lock()</strong> : 获得锁</li>
-<li><p>**unlock() **: 释放锁</p>
-<pre class="line-numbers"><code class="language-java">class Bank {
-        private int account = 100;<br/>
-        //需要声明这个锁<br/>
-        private Lock lock = new ReentrantLock();<br/>
-        public int getAccount() {<br/>
-            return account;<br/>
-        }<br/>
-        //这里不再需要synchronized <br/>
-        public void save(int money) {<br/>
-            lock.lock();<br/>
-            try{<br/>
-                account += money;<br/>
-            }finally{<br/>
-                lock.unlock();<br/>
-            }<br/>
-        }<br/>
-    ｝
-</code></pre>
-<blockquote>
-<p>注：关于Lock对象和synchronized关键字的选择：<br/>
-a.最好两个都不用，使用一种java.util.concurrent包提供的机制，<br/>
-能够帮助用户处理所有与锁相关的代码。<br/>
-b.如果synchronized关键字能满足用户的需求，就用synchronized，因为它能简化代码<br/>
-c.如果需要更高级的功能，就用ReentrantLock类，此时要注意及时释放锁，否则会出现死锁，通常在finally代码释放锁</p>
-</blockquote></li>
-</ul>
 
 
 			

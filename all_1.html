@@ -132,34 +132,100 @@
 			 
 			
 		</div>
-		<h1 class="title" itemprop="name"><a href="15681207051750.html" itemprop="url">
-		Android之Context概述</a></h1>
+		<h1 class="title" itemprop="name"><a href="15681207051869.html" itemprop="url">
+		Gradle之FTP文件下载</a></h1>
 		<div class="entry-content" itemprop="articleBody">
 			
-			<h1 id="toc_0">Context概述</h1>
+			<h1 id="toc_0">Gradle之FTP文件下载</h1>
 
-<h3 id="toc_1">官方注释信息：</h3>
+<h3 id="toc_1">1、背景</h3>
 
-<pre class="line-numbers"><code class="language-java">/**
- * Interface to global information about an application environment.  This is
- * an abstract class whose implementation is provided by
- * the Android system.  It
- * allows access to application-specific resources and classes, as well as
- * up-calls for application-level operations such as launching activities,
- * broadcasting and receiving intents, etc.
- */
-public abstract class Context {
-...
+<p>项目上需要使用本地web，所以我们直接将web直接放入assets资源文件夹下。但是随着开发进行web包越来越大；所以我们想着从版本库里面去掉web将其忽略掉，使用gradle命令下载web。由于web包是放在局域网服务器上的，服务器支持FTP文件协议，所以使用FTP插件下载文件。</p>
+
+<h3 id="toc_2">2、FTP</h3>
+
+<p><a href="https://ant.apache.org/manual/Tasks/ftp.html">FTP官网文档</a><br/>
+<figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910131951.png" alt=""/></figure><br/>
+<a href="https://docs.gradle.org/current/userguide/maven_plugin.html#sec:deploying_to_a_maven_repository">Gradle官网文档</a><br/>
+gradle配置<br/>
+<figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910132710.png" alt=""/></figure></p>
+
+<h3 id="toc_3">3、FTP工具</h3>
+
+<p><strong>ftp-util.gradle</strong></p>
+
+<pre class="line-numbers"><code class="language-text">configurations {
+    ftpAntTask
+}
+
+dependencies {
+    ftpAntTask(&quot;org.apache.ant:ant-commons-net:1.9.2&quot;) {
+        module(&quot;commons-net:commons-net:3.3&quot;)
+    }
+}
+
+void downloadFtpFiles(String serverIp, String userId, String password, String url, localDir) {
+    ant.taskdef(
+            name: &#39;ftp&#39;,
+            classname: &#39;org.apache.tools.ant.taskdefs.optional.net.FTP&#39;,
+            classpath: configurations.ftpAntTask.asPath
+    )
+
+    //指定ftp地址及账户信息
+    ant.ftp(action: &#39;get&#39;, server: serverIp, userid: userId, password: password, remotedir: url) {
+        // 删除老文件
+        delete(new File(localDir))
+
+        //指定下载文件位置
+        fileset(dir: new File(localDir)) {
+            include(name: &quot;**&quot;)
+        }
+    }
+}
+
+//导出函数
+ext {
+    downloadFtpFiles = this.&amp;downloadFtpFiles
 }
 </code></pre>
 
-<blockquote>
-<p>与有关应用程序环境的全局信息的接口。这是一个抽象类，其实现由android系统提供。它允许访问特定于应用程序的资源和类，以及对应用程序级操作（如启动活动、广播和接收意图等）的向上调用。</p>
-</blockquote>
+<h3 id="toc_4">使用方式：</h3>
 
-<p>关联：<a href="https://blog.csdn.net/yanbober/article/details/45967639">Android应用Context详解及源码解析</a></p>
+<p><strong>导入方式</strong>：将ftp-util.gradle文件放在根目录下然后使用一下代码导入<code>groovy</code>代码</p>
 
-<p>关联：<a href="http://blog.csdn.net/guolin_blog/article/details/47028975">Android Context完全解析，你所不知道的Context的各种细节</a></p>
+<pre class="line-numbers"><code class="language-groovy">apply from: &quot;${project.rootProject.file(&#39;ftp-util.gradle&#39;)}&quot;
+</code></pre>
+
+<p><strong>下载任务</strong></p>
+
+<pre class="line-numbers"><code class="language-groovy">task downloadFiles() {
+    //清理缓存
+    dependsOn &#39;clean&#39;
+    def dir = buildDir.getPath() + &#39;/dir&#39;
+    doLast {
+        //获取最新版本信息
+        ant {
+            println &#39;web-ftp:serverIp:&#39; + serverIp
+            println &#39;web-ftp:userId:&#39; + userId
+            println &#39;web-ftp:password:&#39; + password
+            println &#39;web-ftp:dir:&#39; + dir
+
+            println &#39;web-ftp:sync start&#39;
+
+            def url = webUrl + &#39;/latest&#39;
+
+            //调用FTP插件下载文件函数
+            downloadFtpFiles(serverIp, userId, password, url, dir)
+            println &#39;web-ftp:sync end&#39;
+        }
+    }
+}
+</code></pre>
+
+<h3 id="toc_5">调用task方式</h3>
+
+<pre class="line-numbers"><code class="language-groovy">./gradlew downloadFiles
+</code></pre>
 
 
 			
