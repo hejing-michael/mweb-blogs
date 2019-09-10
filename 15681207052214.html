@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>  
+	  
+  	多线程`同步`有几种方式 - 何靖的Blogs
+  	
+	</title>
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="atom.xml" rel="alternate" title="何靖的Blogs" type="application/atom+xml">
+
+	<link href="asset/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="asset/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<script src="asset/javascripts/jquery.min.js"></script>
+	<script src="asset/highlightjs/highlight.pack.js"></script>
+	<link href="asset/highlightjs/styles/solarized_dark.css" media="screen, projection" rel="stylesheet" type="text/css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+	<!--[if lt IE 9]><script src="asset/javascripts/html5.js"></script><![endif]-->
+	<!-- <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'> -->
+	<style type="text/css">
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Nunito-Light'), url(asset/font/1TiHc9yag0wq3lDO9cw0voX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nunito-Regular'), url(asset/font/6TbRXKWJjpj6V2v_WyRbMX-_kf6ByYO6CLYdB4HQE-Y.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Nunito-Bold'), url(asset/font/TttUCfJ272GBgSKaOaD7KoX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+	</style>
+	
+	<style type="text/css">
+	.container .left-col{ opacity: 1;}
+	#pagenavi a{ font-size: 1.3em;}
+	#pagenavi .next:before{ top: 3px;}
+	#pagenavi .prev:before{ top: 3px;}
+	.container .mid-col .mid-col-container #content .archives .title{ font-size: 1.5em;}
+	.container .mid-col .mid-col-container #content article{ padding: 15px 0px;}
+	#header .subtitle {
+		line-height: 1.2em;
+		padding-top: 8px;
+	}
+	article pre{ background: none; border: none; padding: 0;}
+	article .entry-content{text-align: left;}
+	.share-comment{ padding: 25px 0px; clear: both;}
+	hr{ margin: 20px 0px;border: 0; border-top:solid 1px #ddd;}
+	</style>
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner">
+				 
+				 	<div class="profilepic">
+						<img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910210148.jpeg" style="width:160px;">
+					</div>
+            	
+					
+					<h1><a href="index.html">何靖的Blogs</a></h1>
+					<p class="subtitle"></p>
+					<nav id="main-nav">
+						<ul class="main">
+						
+						  <li id=""><a target="self" href="index.html">Home</a></li>
+						
+						  <li id=""><a target="_self" href="archives.html">Archives</a></li>
+						
+						</ul>
+					</nav>
+
+					<nav id="sub-nav">
+						<div class="social">
+
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/hejing-michael" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:hejing.michael@qq.com" title="Email">Email</a>
+
+								
+
+								<a class="rss" href="atom.xml" title="RSS">RSS</a>
+							
+						</div>
+					</nav>
+				</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			<div class="mid-col-container"> <div id="content" class="inner">
+
+	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+		<h1 class="title" itemprop="name">多线程`同步`有几种方式</h1>
+		<div class="entry-content" itemprop="articleBody">
+			<h4 id="toc_0">1、使用synchronized（可同步代码片段也可同步整个函数）</h4>
+
+<ul>
+<li><strong>synchronized关键字修饰的方法</strong>。
+由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
+内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。<br/>
+即有synchronized关键字修饰的方法。<br/>
+由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，<br/>
+内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</li>
+</ul>
+
+<p>代码如:</p>
+
+<pre class="line-numbers"><code class="language-text">   public synchronized void test(){
+    }
+</code></pre>
+
+<blockquote>
+<p>注： synchronized关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类</p>
+</blockquote>
+
+<ul>
+<li><strong>synchronized同步代码块</strong>
+即有synchronized关键字修饰的语句块。<br/>
+被该关键字修饰的语句块会自动被加上内置锁，从而实现同步</li>
+</ul>
+
+<p>代码如： </p>
+
+<pre class="line-numbers"><code class="language-text">synchronized(object){ 
+}
+</code></pre>
+
+<blockquote>
+<p>注：同步是一种高开销的操作，因此应该尽量减少同步的内容。<br/>
+通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可。</p>
+</blockquote>
+
+<h4 id="toc_1">2、使用重入锁实现线程同步</h4>
+
+<p>在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。<br/>
+ReentrantLock类是可重入、互斥、实现了Lock接口的锁，<br/>
+它与使用synchronized方法和快具有相同的基本行为和语义，并且扩展了其能力。<br/>
+ReenreantLock类的常用方法有：</p>
+
+<ul>
+<li><strong>ReentrantLock()</strong> : 创建一个ReentrantLock实例</li>
+<li><strong>lock()</strong> : 获得锁</li>
+<li><p>**unlock() **: 释放锁</p>
+<pre class="line-numbers"><code class="language-java">class Bank {
+        private int account = 100;<br/>
+        //需要声明这个锁<br/>
+        private Lock lock = new ReentrantLock();<br/>
+        public int getAccount() {<br/>
+            return account;<br/>
+        }<br/>
+        //这里不再需要synchronized <br/>
+        public void save(int money) {<br/>
+            lock.lock();<br/>
+            try{<br/>
+                account += money;<br/>
+            }finally{<br/>
+                lock.unlock();<br/>
+            }<br/>
+        }<br/>
+    ｝
+</code></pre>
+<blockquote>
+<p>注：关于Lock对象和synchronized关键字的选择：<br/>
+a.最好两个都不用，使用一种java.util.concurrent包提供的机制，<br/>
+能够帮助用户处理所有与锁相关的代码。<br/>
+b.如果synchronized关键字能满足用户的需求，就用synchronized，因为它能简化代码<br/>
+c.如果需要更高级的功能，就用ReentrantLock类，此时要注意及时释放锁，否则会出现死锁，通常在finally代码释放锁</p>
+</blockquote></li>
+</ul>
+
+		</div>
+	</article>
+	<div class="share-comment">
+	 
+
+	  
+
+	  
+
+	</div>
+</div>        </div>
+			<footer id="footer" class="inner">Copyright &copy; 2014
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
+Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
+      </footer>
+		</div>
+	</div>
+
+  
+    
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+</body>
+</html>

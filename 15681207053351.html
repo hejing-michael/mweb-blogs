@@ -1,0 +1,1002 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>  
+	  
+  	Java基础知识（转&添加） - 何靖的Blogs
+  	
+	</title>
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="atom.xml" rel="alternate" title="何靖的Blogs" type="application/atom+xml">
+
+	<link href="asset/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="asset/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<script src="asset/javascripts/jquery.min.js"></script>
+	<script src="asset/highlightjs/highlight.pack.js"></script>
+	<link href="asset/highlightjs/styles/solarized_dark.css" media="screen, projection" rel="stylesheet" type="text/css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+	<!--[if lt IE 9]><script src="asset/javascripts/html5.js"></script><![endif]-->
+	<!-- <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'> -->
+	<style type="text/css">
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Nunito-Light'), url(asset/font/1TiHc9yag0wq3lDO9cw0voX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nunito-Regular'), url(asset/font/6TbRXKWJjpj6V2v_WyRbMX-_kf6ByYO6CLYdB4HQE-Y.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Nunito-Bold'), url(asset/font/TttUCfJ272GBgSKaOaD7KoX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+	</style>
+	
+	<style type="text/css">
+	.container .left-col{ opacity: 1;}
+	#pagenavi a{ font-size: 1.3em;}
+	#pagenavi .next:before{ top: 3px;}
+	#pagenavi .prev:before{ top: 3px;}
+	.container .mid-col .mid-col-container #content .archives .title{ font-size: 1.5em;}
+	.container .mid-col .mid-col-container #content article{ padding: 15px 0px;}
+	#header .subtitle {
+		line-height: 1.2em;
+		padding-top: 8px;
+	}
+	article pre{ background: none; border: none; padding: 0;}
+	article .entry-content{text-align: left;}
+	.share-comment{ padding: 25px 0px; clear: both;}
+	hr{ margin: 20px 0px;border: 0; border-top:solid 1px #ddd;}
+	</style>
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner">
+				 
+				 	<div class="profilepic">
+						<img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910210148.jpeg" style="width:160px;">
+					</div>
+            	
+					
+					<h1><a href="index.html">何靖的Blogs</a></h1>
+					<p class="subtitle"></p>
+					<nav id="main-nav">
+						<ul class="main">
+						
+						  <li id=""><a target="self" href="index.html">Home</a></li>
+						
+						  <li id=""><a target="_self" href="archives.html">Archives</a></li>
+						
+						</ul>
+					</nav>
+
+					<nav id="sub-nav">
+						<div class="social">
+
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/hejing-michael" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:hejing.michael@qq.com" title="Email">Email</a>
+
+								
+
+								<a class="rss" href="atom.xml" title="RSS">RSS</a>
+							
+						</div>
+					</nav>
+				</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			<div class="mid-col-container"> <div id="content" class="inner">
+
+	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+		<h1 class="title" itemprop="name">Java基础知识（转&添加）</h1>
+		<div class="entry-content" itemprop="articleBody">
+			<h1 id="toc_0">Java基础知识（转&amp;添加）</h1>
+
+<ul>
+<li>
+<a href="#toc_0">Java基础知识（转&amp;添加）</a>
+<ul>
+<li>
+<a href="#toc_1">java中“==”和equals的区别以及hashCode的区别</a>
+<ul>
+<li>
+<a href="#toc_2"><code>==</code>概述</a>
+</li>
+<li>
+<a href="#toc_3"><code>equals</code>概述</a>
+</li>
+<li>
+<a href="#toc_4">举个例子：</a>
+</li>
+<li>
+<a href="#toc_5">注：</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_6">hashCode 与 equals</a>
+</li>
+<li>
+<a href="#toc_7">基本数据类型各占多少字节、多少位</a>
+</li>
+<li>
+<a href="#toc_8">包装类型 int与Integer的区别</a>
+</li>
+<li>
+<a href="#toc_9">面向对象思想</a>
+<ul>
+<li>
+<a href="#toc_10">封装</a>
+</li>
+<li>
+<a href="#toc_11">继承</a>
+</li>
+<li>
+<a href="#toc_12">多态</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_13">String、StringBuffer、StringBuilder区别</a>
+</li>
+<li>
+<a href="#toc_14">什么是内部类？内部类的作用</a>
+<ul>
+<li>
+<a href="#toc_15">内部类分类</a>
+<ul>
+<li>
+<a href="#toc_16">成员内部类</a>
+</li>
+<li>
+<a href="#toc_17">局部内部类</a>
+</li>
+<li>
+<a href="#toc_18">匿名内部类</a>
+</li>
+<li>
+<a href="#toc_19">静态内部类</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_20">内部类的作用</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_21">抽象类和接口区别</a>
+</li>
+<li>
+<a href="#toc_22">抽象类的意义</a>
+</li>
+<li>
+<a href="#toc_23">抽象类与接口的应用场景</a>
+<ul>
+<li>
+<a href="#toc_24">interface的应用场合</a>
+</li>
+<li>
+<a href="#toc_25">abstract class的应用场合</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_26">抽象类是否可以没有方法和属性？</a>
+</li>
+<li>
+<a href="#toc_27">接口的意义</a>
+</li>
+<li>
+<a href="#toc_28">泛型中extends和super的区别</a>
+</li>
+<li>
+<a href="#toc_29">父类的静态方法能否被子类重写</a>
+</li>
+<li>
+<a href="#toc_30">进程和线程的区别</a>
+</li>
+<li>
+<a href="#toc_31">final，finally，finalize的区别</a>
+</li>
+<li>
+<a href="#toc_32">序列化</a>
+<ul>
+<li>
+<a href="#toc_33">定义</a>
+</li>
+<li>
+<a href="#toc_34">方式</a>
+</li>
+<li>
+<a href="#toc_35">区别</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_36">静态属性和静态方法是否可以被继承？是否可以被重写？以及原因？</a>
+</li>
+<li>
+<a href="#toc_37">静态内部类的设计意图</a>
+</li>
+<li>
+<a href="#toc_38">成员内部类、静态内部类、局部内部类和匿名内部类的理解，以及项目中的应用</a>
+</li>
+<li>
+<a href="#toc_39">谈谈对kotlin的理解</a>
+</li>
+<li>
+<a href="#toc_40">闭包和局部内部类的区别</a>
+</li>
+<li>
+<a href="#toc_41">string 转换成 integer的方式及原理</a>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2 id="toc_1">java中“==”和equals的区别以及hashCode的区别</h2>
+
+<h3 id="toc_2"><code>==</code>概述</h3>
+
+<p><code>==</code>即可以比较基本类型数据也可以比较对象数据，进行基本数据类型比较时比较的是值，进行对象比较时比较的是对象的内存地址。</p>
+
+<h3 id="toc_3"><code>equals</code>概述</h3>
+
+<p>它的作用也是判断两个对象是否相等。<code>equals</code>只能比较对象，即使Objects.equals()&quot;可以&quot;比较两个基本值类型变量，但它实际上比较的时自动装箱过后的值类型对应的对象。IDE也会建议用<code>==</code>比较基本数据类型。但<code>equals</code>一般有两种使用情况：</p>
+
+<ul>
+<li><strong>情况一</strong>：类没有覆盖equals()方法。则通过 equals() 比较该类的两个对象时，等价于通过“==”比较这两个对象。</li>
+<li><strong>情况二</strong>：类有覆盖equals()方法。一般，我们都覆盖 equals() 方法来判断两个对象的内容相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)。</li>
+</ul>
+
+<h3 id="toc_4">举个例子：</h3>
+
+<pre class="line-numbers"><code class="language-java">public class test1 {
+    public static void main(String[] args) {
+        String a = new String(&quot;ab&quot;); // a 为一个引用
+        String b = new String(&quot;ab&quot;); // b为另一个引用,对象的内容一样
+        String aa = &quot;ab&quot;; // 放在常量池中
+        String bb = &quot;ab&quot;; // 从常量池中查找
+        if (aa == bb) // true
+            System.out.println(&quot;aa==bb&quot;);
+        if (a == b) // false，非同一对象
+            System.out.println(&quot;a==b&quot;);
+        if (a.equals(b)) // true
+            System.out.println(&quot;aEQb&quot;);
+        if (42 == 42.0) { // true
+            System.out.println(&quot;true&quot;);
+        }
+    }
+}
+</code></pre>
+
+<h3 id="toc_5">注：</h3>
+
+<ul>
+<li>String是对象类型，继承了Object，但是它是重写了equals()方法的，因为object中的equals是比较的对象内存地址，String比较的是对象的值</li>
+<li>当创建 String 类型的对象时，虚拟机会在常量池中查找有没有已经存在的值和要创建的值相同的对象，如果有就把它赋给当前引用。如果没有就在常量池中重新创建一个 String 对象。</li>
+</ul>
+
+<h2 id="toc_6">hashCode 与 equals</h2>
+
+<p>面试官可能会问你：“你重写过 hashcode 和 equals 么，为什么重写equals时必须重写hashCode方法？”</p>
+
+<p><strong>hashCode（）介绍</strong><br/>
+<code>hashCode()</code> 的作用是获取哈希码，也称为<code>散列码</code>；它实际上是返回一个int整数。这个哈希码的作用是确定该对象在哈希表中的索引位置。<code>hashCode()</code> 定义在JDK的<code>Object.java</code>中，这就意味着Java中的任何类都包含有<code>hashCode()</code> 函数。</p>
+
+<p><code>散列表</code>存储的是<code>键值对</code>(key-value)，它的特点是：能根据“键”快速的检索出对应的“值”。这其中就利用到了<code>散列码</code>！（可以快速找到所需要的对象）</p>
+
+<p><strong>为什么要有 hashCode</strong></p>
+
+<p>我们先以“<strong>HashSet 如何检查重复</strong>”为例子来说明为什么要有 hashCode：</p>
+
+<blockquote>
+<p>当你把对象加入 HashSet 时，HashSet 会先计算对象的 hashcode 值来判断对象加入的位置，同时也会与其他已经加入的对象的 hashcode 值作比较，如果没有相符的hashcode，HashSet会假设对象没有重复出现。但是如果发现有相同 hashcode 值的对象，这时会调用 equals（）方法来检查 hashcode 相等的对象是否真的相同。如果两者相同，HashSet 就不会让其加入操作成功。如果不同的话，就会重新散列到其他位置。（摘自《Head first java》第二版）。这样我们就大大减少了 equals 的次数，相应就大大提高了执行速度。</p>
+</blockquote>
+
+<p>通过上述我们可以看出：hashCode() 的作用就是获取哈希码，也称为散列码；它实际上是返回一个int整数。这个哈希码的作用是确定该对象在哈希表中的索引位置。<strong>hashCode()在散列表中才有用，在其它情况下没用。</strong>在散列表中hashCode() 的作用是获取对象的散列码，进而确定该对象在散列表中的位置。</p>
+
+<p><strong>hashCode（）与equals（）的相关规定</strong></p>
+
+<ul>
+<li>如果两个对象相等，则hashcode一定也是相同的</li>
+<li>两个对象相等,对两个对象分别调用equals方法都返回true</li>
+<li>两个对象有相同的hashcode值，它们也不一定是相等的</li>
+<li>因此，equals 方法被覆盖过，则 hashCode 方法也必须被覆盖</li>
+<li>hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）</li>
+</ul>
+
+<p><strong>推荐阅读</strong>：<a href="https://www.cnblogs.com/skywang12345/p/3324958.html">Java hashCode() 和 equals()的若干问题解答</a></p>
+
+<h2 id="toc_7">基本数据类型各占多少字节、多少位</h2>
+
+<p><strong>注</strong>：bit 位 </p>
+
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名字</th>
+<th>字节（8bit）</th>
+<th>位</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>byte</td>
+<td>字节</td>
+<td>1</td>
+<td>1*8</td>
+</tr>
+<tr>
+<td>char</td>
+<td>字符</td>
+<td>2</td>
+<td>2*8=16</td>
+</tr>
+<tr>
+<td>short</td>
+<td>短整型</td>
+<td>2</td>
+<td>2*8=16</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整形</td>
+<td>4</td>
+<td>4*8=32</td>
+</tr>
+<tr>
+<td>long</td>
+<td>长整型</td>
+<td>8</td>
+<td>8*8=64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度浮点数</td>
+<td>4</td>
+<td>4*8=32</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度浮点型</td>
+<td>8</td>
+<td>8*8=64</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>布尔值</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p><strong>注：</strong><code>boolean</code> 只有两个值：<code>true</code>、<code>false</code>，可以使用 1 bit 来存储，但是具体大小没有明确规定。JVM 会在编译时期将 <code>boolean</code> 类型的数据转换为 <code>int</code>，使用 1 来表示 <code>true</code>，0 表示 <code>false</code>。JVM 支持 <code>boolean</code> 数组，但是是通过读写 <code>byte</code> 数组来实现的。</p>
+</blockquote>
+
+<ul>
+<li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html">Primitive Data Types</a></li>
+<li><a href="https://docs.oracle.com/javase/specs/jvms/se8/jvms8.pdf">The Java® Virtual Machine Specification</a></li>
+</ul>
+
+<h2 id="toc_8">包装类型 int与Integer的区别</h2>
+
+<p>基本类型都有对应的包装类型，基本类型与其对应的包装类型之间的赋值使用自动装箱与拆箱完成。</p>
+
+<pre class="line-numbers"><code class="language-java">Integer x = 2;     // 装箱
+int y = x;         // 拆箱
+</code></pre>
+
+<h2 id="toc_9">面向对象思想</h2>
+
+<h3 id="toc_10">封装</h3>
+
+<p>利用抽象数据类型将数据和基于数据的操作封装在一起，使其构成一个不可分割的独立实体。数据被保护在抽象数据类型的内部，尽可能地隐藏内部的细节，只保留一些对外接口使之与外部发生联系。用户无需知道对象内部的细节，但可以通过对象对外提供的接口来访问该对象。</p>
+
+<p>优点：</p>
+
+<ul>
+<li>减少耦合：可以独立地开发、测试、优化、使用、理解和修改</li>
+<li>减轻维护的负担：可以更容易被程序员理解，并且在调试的时候可以不影响其他模块</li>
+<li>有效地调节性能：可以通过剖析确定哪些模块影响了系统的性能</li>
+<li>提高软件的可重用性</li>
+<li>降低了构建大型系统的风险：即使整个系统不可用，但是这些独立的模块却有可能是可用的</li>
+</ul>
+
+<p>以下 Person 类封装 name、gender、age 等属性，外界只能通过 get() 方法获取一个 Person 对象的 name 属性和 gender 属性，而无法获取 age 属性，但是 age 属性可以供 work() 方法使用。</p>
+
+<p>注意到 gender 属性使用 int 数据类型进行存储，封装使得用户注意不到这种实现细节。并且在需要修改 gender 属性使用的数据类型时，也可以在不影响客户端代码的情况下进行。</p>
+
+<pre class="line-numbers"><code class="language-java">public class Person {
+
+    private String name;
+    private int gender;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGender() {
+        return gender == 0 ? &quot;man&quot; : &quot;woman&quot;;
+    }
+
+    public void work() {
+        if (18 &lt;= age &amp;&amp; age &lt;= 50) {
+            System.out.println(name + &quot; is working very hard!&quot;);
+        } else {
+            System.out.println(name + &quot; can&#39;t work any more!&quot;);
+        }
+    }
+}
+</code></pre>
+
+<h3 id="toc_11">继承</h3>
+
+<p>继承实现了  <strong>IS-A</strong>  关系，例如 Cat 和 Animal 就是一种 IS-A 关系，因此 Cat 可以继承自 Animal，从而获得 Animal 非 private 的属性和方法。</p>
+
+<p>继承应该遵循里氏替换原则，子类对象必须能够替换掉所有父类对象。</p>
+
+<p>Cat 可以当做 Animal 来使用，也就是说可以使用 Animal 引用 Cat 对象。父类引用指向子类对象称为  <strong>向上转型</strong> 。</p>
+
+<pre class="line-numbers"><code class="language-java">Animal animal = new Cat();
+</code></pre>
+
+<h3 id="toc_12">多态</h3>
+
+<p>多态分为编译时多态和运行时多态：</p>
+
+<ul>
+<li>编译时多态主要指方法的重载</li>
+<li>运行时多态指程序中定义的对象引用所指向的具体类型在运行期间才确定</li>
+</ul>
+
+<p>运行时多态有三个条件：</p>
+
+<ul>
+<li>继承</li>
+<li>覆盖（重写）</li>
+<li>向上转型</li>
+</ul>
+
+<p>下面的代码中，乐器类（Instrument）有两个子类：Wind 和 Percussion，它们都覆盖了父类的 play() 方法，并且在 main() 方法中使用父类 Instrument 来引用 Wind 和 Percussion 对象。在 Instrument 引用调用 play() 方法时，会执行实际引用对象所在类的 play() 方法，而不是 Instrument 类的方法。</p>
+
+<pre class="line-numbers"><code class="language-java">public class Instrument {
+
+    public void play() {
+        System.out.println(&quot;Instument is playing...&quot;);
+    }
+}
+
+public class Wind extends Instrument {
+
+    public void play() {
+        System.out.println(&quot;Wind is playing...&quot;);
+    }
+}
+
+public class Percussion extends Instrument {
+
+    public void play() {
+        System.out.println(&quot;Percussion is playing...&quot;);
+    }
+}
+
+public class Music {
+
+    public static void main(String[] args) {
+        List&lt;Instrument&gt; instruments = new ArrayList&lt;&gt;();
+        instruments.add(new Wind());
+        instruments.add(new Percussion());
+        for(Instrument instrument : instruments) {
+            instrument.play();
+        }
+    }
+}
+</code></pre>
+
+<h2 id="toc_13">String、StringBuffer、StringBuilder区别</h2>
+
+<p><strong>1. 可变性</strong> </p>
+
+<ul>
+<li>String 不可变</li>
+<li>StringBuffer 和 StringBuilder 可变</li>
+</ul>
+
+<p><strong>2. 线程安全</strong> </p>
+
+<ul>
+<li>String 不可变，因此是线程安全的</li>
+<li>StringBuilder 不是线程安全的</li>
+<li>StringBuffer 是线程安全的，内部使用 synchronized 进行同步</li>
+</ul>
+
+<p><a href="https://stackoverflow.com/questions/2971315/string-stringbuffer-and-stringbuilder">StackOverflow : String, StringBuffer, and StringBuilder</a></p>
+
+<h2 id="toc_14">什么是内部类？内部类的作用</h2>
+
+<p><a href="https://www.cnblogs.com/dolphin0520/p/3811445.html">Java内部类详解</a></p>
+
+<p>　　在Java中，可以将一个类定义在另一个类里面或者一个方法里面，这样的类称为内部类。广泛意义上的内部类一般来说包括这四种：成员内部类、局部内部类、匿名内部类和静态内部类。下面就先来了解一下这四种内部类的用法</p>
+
+<h3 id="toc_15">内部类分类</h3>
+
+<h4 id="toc_16">成员内部类</h4>
+
+<p>成员内部类是最普通的内部类，它的定义为位于另一个类的内部，形如下面的形式：</p>
+
+<pre class="line-numbers"><code class="language-java">class Circle {
+
+    double radius = 0;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    //内部类
+    class Draw {     
+        public void drawSahpe() {
+            System.out.println( &quot;drawshape&quot; );
+        }
+    }
+}
+</code></pre>
+
+<p>这样看起来，类Draw像是类Circle的一个成员，Circle称为外部类。成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
+
+<pre class="line-numbers"><code class="language-java">class Circle {
+    private double radius = 0;
+    public static int count =1;
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+     
+    class Draw {     //内部类
+        public void drawSahpe() {
+            System.out.println(radius);  //外部类的private成员
+            System.out.println(count);   //外部类的静态成员
+        }
+    }
+}
+</code></pre>
+
+<p>成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。创建成员内部类对象的一般方式如下：</p>
+
+<pre class="line-numbers"><code class="language-java">public class Test {
+    public static void main(String[] args)  {
+        //第一种方式：
+        Outter outter = new Outter();
+        Outter.Inner inner = outter.new Inner();  //必须通过Outter对象来创建
+         
+        //第二种方式：
+        Outter.Inner inner1 = outter.getInnerInstance();
+    }
+}
+ 
+class Outter {
+    private Inner inner = null;
+    public Outter() {
+         
+    }
+     
+    public Inner getInnerInstance() {
+        if(inner == null)
+            inner = new Inner();
+        return inner;
+    }
+      
+    class Inner {
+        public Inner() {
+             
+        }
+    }
+}
+</code></pre>
+
+<p>　　内部类可以拥有private访问权限、protected访问权限、public访问权限及包访问权限。比如上面的例子，如果成员内部类Inner用private修饰，则只能在外部类的内部访问，如果用public修饰，则任何地方都能访问；如果用protected修饰，则只能在同一个包下或者继承外部类的情况下访问；如果是默认访问权限，则只能在同一个包下访问。这一点和外部类有一点不一样，外部类只能被public和包访问两种权限修饰。我个人是这么理解的，由于成员内部类看起来像是外部类的一个成员，所以可以像类的成员一样拥有多种权限修饰。<br/>
+　　</p>
+
+<h4 id="toc_17">局部内部类</h4>
+
+<p>局部内部类是定义在一个方法或者一个作用域里面的类，它和成员内部类的区别在于局部内部类的访问仅限于方法内或者该作用域内。</p>
+
+<pre class="line-numbers"><code class="language-java">class People{
+    public People() {
+         
+    }
+}
+ 
+class Man{
+    public Man(){
+         
+    }
+     
+    public People getWoman(){
+        class Woman extends People{   //局部内部类
+            int age =0;
+        }
+        return new Woman();
+    }
+}
+</code></pre>
+
+<p>　　注意，局部内部类就像是方法里面的一个局部变量一样，是不能有public、protected、private以及static修饰符的。</p>
+
+<h4 id="toc_18">匿名内部类</h4>
+
+<p>匿名内部类应该是平时我们编写代码时用得最多的，在编写事件监听的代码时使用匿名内部类不但方便，而且使代码更加容易维护。下面这段代码是一段Android事件监听代码：</p>
+
+<pre class="line-numbers"><code class="language-java">scan_bt.setOnClickListener(new OnClickListener() {
+             
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                 
+            }
+});
+         
+        history_bt.setOnClickListener(new OnClickListener() {
+             
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                 
+            }
+        });
+</code></pre>
+
+<p>　　这段代码为两个按钮设置监听器，这里面就使用了匿名内部类。这段代码中的：</p>
+
+<pre class="line-numbers"><code class="language-java">new OnClickListener() {
+             
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                 
+            }
+        }
+</code></pre>
+
+<p>　　<br/>
+就是匿名内部类的使用。代码中需要给按钮设置监听器对象，使用匿名内部类能够在实现父类或者接口中的方法情况下同时产生一个相应的对象，但是前提是这个父类或者接口必须先存在才能这样使用。当然像下面这种写法也是可以的，跟上面使用匿名内部类达到效果相同。</p>
+
+<pre class="line-numbers"><code class="language-java">private void setListener()
+{
+    scan_bt.setOnClickListener(new Listener1());       
+    history_bt.setOnClickListener(new Listener2());
+}
+ 
+class Listener1 implements View.OnClickListener{
+    @Override
+    public void onClick(View v) {
+    // TODO Auto-generated method stub
+             
+    }
+}
+ 
+class Listener2 implements View.OnClickListener{
+    @Override
+    public void onClick(View v) {
+    // TODO Auto-generated method stub
+             
+    }
+}
+</code></pre>
+
+<p>　　这种写法虽然能达到一样的效果，但是既冗长又难以维护，所以一般使用匿名内部类的方法来编写事件监听代码。同样的，匿名内部类也是不能有访问修饰符和static修饰符的。</p>
+
+<p>　　匿名内部类是唯一一种没有构造器的类。正因为其没有构造器，所以匿名内部类的使用范围非常有限，大部分匿名内部类用于接口回调。匿名内部类在编译的时候由系统自动起名为Outter$1.class。一般来说，匿名内部类用于继承其他类或是实现接口，并不需要增加额外的方法，只是对继承方法的实现或是重写。<br/>
+　　</p>
+
+<h4 id="toc_19">静态内部类</h4>
+
+<p>静态内部类也是定义在另一个类里面的类，只不过在类的前面多了一个关键字static。静态内部类是不需要依赖于外部类的，这点和类的静态成员属性有点类似，并且它不能使用外部类的非static成员变量或者方法，这点很好理解，因为在没有外部类的对象的情况下，可以创建静态内部类的对象，如果允许访问外部类的非static成员就会产生矛盾，因为外部类的非static成员必须依附于具体的对象。</p>
+
+<pre class="line-numbers"><code class="language-java">public class Test {
+    public static void main(String[] args)  {
+        Outter.Inner inner = new Outter.Inner();
+    }
+}
+ 
+class Outter {
+    public Outter() {
+         
+    }
+     
+    static class Inner {
+        public Inner() {
+             
+        }
+    }
+}
+</code></pre>
+
+<h3 id="toc_20">内部类的作用</h3>
+
+<ul>
+<li><strong>内部类可以很好的实现隐藏</strong></li>
+</ul>
+
+<p>一般的非内部类，是不允许有 private 与protected权限的，但内部类可以</p>
+
+<ul>
+<li><strong>内部类拥有外围类的所有元素的访问权限</strong></li>
+</ul>
+
+<p><strong>为什么可以引用：</strong><br/>
+内部类虽然和外部类写在同一个文件中， 但是编译完成后， 还是生成各自的class文件，内部类通过this访问外部类的成员。</p>
+
+<ol>
+<li>编译器自动为内部类添加一个成员变量， 这个成员变量的类型和外部类的类型相同， 这个成员变量就是指向外部类对象(this)的引用；</li>
+<li>编译器自动为内部类的构造方法添加一个参数， 参数的类型是外部类的类型， 在构造方法内部使用这个参数为内部类中添加的成员变量赋值；</li>
+<li><p>在调用内部类的构造函数初始化内部类对象时，会默认传入外部类的引用。</p></li>
+</ol>
+
+<ul>
+<li><strong>可是实现多重继承</strong></li>
+</ul>
+
+<p>我们知道 java 是不允许使用 extends 去继承多个类的。内部类的引入可以很好的解决这个事情。<br/>
+以下引用 《Thinking In Java》中的一段话：</p>
+
+<p>每个内部类都可以队里的继承自一个（接口的）实现，所以无论外围类是否已经继承了某个（接口的）实现，对于内部类没有影响<br/>
+如果没有内部类提供的、可以继承多个具体的或抽象的类的能力，一些设计与编程问题就难以解决。<br/>
+接口解决了部分问题，一个类可以实现多个接口，内部类允许继承多个非接口类型（类或抽象类）。</p>
+
+<p>我的理解 Java只能继承一个类这个学过基本语法的人都知道，而在有内部类之前它的多重继承方式是用接口来实现的。但使用接口有时候有很多不方便的地方。比如我们实现一个接口就必须实现它里面的所有方法。而有了内部类就不一样了。它可以使我们的类继承多个具体类或抽象类。</p>
+
+<ul>
+<li><strong>可以避免修改接口而实现同一个类中两种同名方法的调用</strong></li>
+</ul>
+
+<h2 id="toc_21">抽象类和接口区别</h2>
+
+<p><a href="https://www.runoob.com/java/java-interfaces.html">抽象类和接口区别</a></p>
+
+<ul>
+<li><strong>接口不能用于实例化对象</strong>。</li>
+<li><strong>接口没有构造方法</strong>。</li>
+<li><strong>接口中所有的方法必须是抽象方法</strong>。</li>
+<li><strong>接口不能包含成员变量，除了 static 和 final 变量</strong>。</li>
+<li><strong>接口不是被类继承了，而是要被类实现</strong>。</li>
+<li><strong>接口支持多继承</strong>。</li>
+</ul>
+
+<h2 id="toc_22">抽象类的意义</h2>
+
+<p><strong>定义：</strong><br/>
+如果一个类中没有包含足够的信息来描绘一个具体的对象，这样的类就是<a href="https://www.runoob.com/java/java-abstraction.html">抽象类</a></p>
+
+<blockquote>
+<p>抽象类除了不能实例化对象之外，类的其它功能依然存在，成员变量、成员方法和构造方法的访问方式和普通类一样。</p>
+
+<p>由于抽象类不能实例化对象，所以抽象类必须被继承，才能被使用。也是因为这个原因，通常在设计阶段决定要不要设计抽象类。</p>
+
+<p>父类包含了子类集合的常见的方法，但是由于父类本身是抽象的，所以不能使用这些方法。</p>
+
+<p>在Java中抽象类表示的是一种继承关系，一个类只能继承一个抽象类，而一个类却可以实现多个接口。</p>
+</blockquote>
+
+<p><strong>抽象类总结规定：</strong></p>
+
+<ol>
+<li><p>抽象类不能被实例化(初学者很容易犯的错)，如果被实例化，就会报错，编译无法通过。只有抽象类的非抽象子类可以创建对象。</p></li>
+<li><p>抽象类中不一定包含抽象方法，但是有抽象方法的类必定是抽象类。</p></li>
+<li><p>抽象类中的抽象方法只是声明，不包含方法体，就是不给出方法的具体实现也就是方法的具体功能。</p></li>
+<li><p>构造方法，类方法（用 static 修饰的方法）不能声明为抽象方法。</p></li>
+<li><p>抽象类的子类必须给出抽象类中的抽象方法的具体实现，除非该子类也是抽象类。</p></li>
+</ol>
+
+<h2 id="toc_23">抽象类与接口的应用场景</h2>
+
+<h3 id="toc_24">interface的应用场合</h3>
+
+<ol>
+<li>类与类之前需要特定的接口进行协调，而不在乎其如何实现。</li>
+<li>作为能够实现特定功能的标识存在，也可以是什么接口方法都没有的纯粹标识。</li>
+<li>需要将一组类视为单一的类，而调用者只通过接口来与这组类发生联系。</li>
+<li>需要实现特定的多项功能，而这些功能之间可能完全没有任何联系。</li>
+</ol>
+
+<h3 id="toc_25">abstract class的应用场合</h3>
+
+<p>一句话，在既需要统一的接口，又需要实例变量或缺省的方法的情况下，就可以使用它。最常见的有：</p>
+
+<ol>
+<li>定义了一组接口，但又不想强迫每个实现类都必须实现所有的接口。可以用abstract class定义一组方法体，甚至可以是空方法体，然后由子类选择自己所感兴趣的方法来覆盖。</li>
+<li>某些场合下，只靠纯粹的接口不能满足类与类之间的协调，还必需类中表示状态的变量来区别不同的关系。abstract的中介作用可以很好地满足这一点。</li>
+<li>规范了一组相互协调的方法，其中一些方法是共同的，与状态无关的，可以共享的，无需子类分别实现；而另一些方法却需要各个子类根据自己特定的状态来实现特定的功能</li>
+</ol>
+
+<h2 id="toc_26">抽象类是否可以没有方法和属性？</h2>
+
+<ul>
+<li><p>抽象类专用于派生出子类，子类必须实现抽象类所声明的抽象方法，否则，子类仍是抽象类。</p></li>
+<li><p>包含抽象方法的类一定是抽象类，但抽象类中的方法不一定是抽象方法。</p></li>
+<li><p>抽象类中可以没有抽象方法，但有抽象方法的一定是抽象类。所以，java中 抽象类里面可以没有抽象方法。比如HttpServlet类。抽象类和普通类的区别就在于，抽象类不能被实例化，就是不能被new出来，即使抽象类里面没有抽象方法。</p></li>
+<li><p>抽象类的作用在于子类对其的继承和实现，也就是多态；而没有抽象方法的抽象类的存在价值在于：实例化了没有意义，因为类已经定义好了，不能改变其中的方法体，但是实例化出来的对象却满足不了要求，只有继承并重写了他的子类才能满足要求。所以才把它定义为没有抽象方法的抽象类</p></li>
+</ul>
+
+<h2 id="toc_27">接口的意义</h2>
+
+<p>简单地说：接口的作用就是把使用接口的人和实现接口的人分开，实现接口的人不必要关心谁去使用，而使用接口的人也不用关心实现的细节。<br/>
+4点关于JAVA中接口存在的意义：</p>
+
+<ul>
+<li><p><strong>重要性</strong>：在Java语言中， abstract class 和interface 是支持抽象类定义的两种机制。正是由于这两种机制的存在，才赋予了Java强大的 面向对象能力。</p></li>
+<li><p><strong>简单、规范性</strong>：如果一个项目比较庞大，那么就需要一个能理清所有业务的架构师来定义一些主要的接口，这些接口不仅告诉开发人员你需要实现那些业务，而且也将命名规范限制住了（防止一些开发人员随便命名导致别的程序员无法看明白）。</p></li>
+<li><p><strong>维护、拓展性</strong>：比如有一个类，实现了某个功能，突然有一天，发现这个类满足不了需求了，然后又要重新设计这个类，更糟糕是你可能要放弃这个类，那么其他地方可能有引用他，这样修改起来很麻烦。</p></li>
+</ul>
+
+<blockquote>
+<p>如果一开始定义一个接口，把功能放在接口里，然后定义类时实现这个接口，然后只要用这个接口去引用实现它的类就行了，以后要换的话只不过是引用另一个类而已，这样就达到维护、拓展的方便性。比如有个method1的方法，如果用接口，【接口名】 【对象名】=new 【实现接口的类】，这样想用哪个类的对象就可以new哪个对象了，new a（）；就是用a的方法，new b（）就是用b的方法，就和USB接口一样，插什么读什么，就是这个原理。</p>
+
+<p>你要做一个画板程序，其中里面有一个面板类，主要负责绘画功能，然后你就这样定义了这个类。</p>
+</blockquote>
+
+<ul>
+<li><strong>安全、严密性</strong>：接口是实现软件松耦合的重要手段，它描叙了系统对外的所有服务，而不涉及任何具体的实现细节。这样就比较安全、严密一些（一般软件服务商考虑的比较多，jdk中很多方法就是实现了某个接口）。</li>
+</ul>
+
+<h2 id="toc_28">泛型中extends和super的区别</h2>
+
+<p><a href="https://itimetraveler.github.io/2016/12/27/%E3%80%90Java%E3%80%91%E6%B3%9B%E5%9E%8B%E4%B8%AD%20extends%20%E5%92%8C%20super%20%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F/">【Java】泛型中 extends 和 super 的区别</a></p>
+
+<h2 id="toc_29">父类的静态方法能否被子类重写</h2>
+
+<ul>
+<li>答案：不能</li>
+<li>原因：因为静态方法从程序开始运行后就已经分配了内存，也就是说已经写死了。所有引用到该方法的对象（父类的对象也好子类的对象也好）所指向的都是同一块内存中的数据，也就是该静态方法。子类中如果定义了相同名称的静态方法，并不会重写，而应该是在内存中又分配了一块给子类的静态方法，没有重写这一说。</li>
+</ul>
+
+<h2 id="toc_30">进程和线程的区别</h2>
+
+<p><a href="https://www.cnblogs.com/lmule/archive/2010/08/18/1802774.html">进程和线程的区别</a><br/>
+<a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html">进程和线程的区别（故事版）</a></p>
+
+<h2 id="toc_31">final，finally，finalize的区别</h2>
+
+<ul>
+<li><p>final 用于声明属性,方法和类, 分别表示属性不可变, 方法不可覆盖, 类不可继承.</p></li>
+<li><p>finally 是异常处理语句结构的一部分，表示总是执行.</p></li>
+<li><p>finalize 是Object类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法，可以覆盖此方法提供垃圾收集时的其他资源回收，例如关闭文件等. JVM不保证此方法总被调用.</p></li>
+</ul>
+
+<h2 id="toc_32">序列化</h2>
+
+<h3 id="toc_33">定义</h3>
+
+<ul>
+<li><strong><a href="https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96">序列化</a>（serialization）定义：</strong>在计算机科学的数据处理中，是指将数据结构或对象状态转换成可取用格式（例如存成文件，存于缓冲，或经由网络中发送），以留待后续在相同或另一台计算机环境中，能恢复原先状态的过程。依照序列化格式重新获取字节的结果时，可以利用它来产生与原始对象相同语义的副本。对于许多对象，像是使用大量引用的复杂对象，这种序列化重建的过程并不容易。面向对象中的对象序列化，并不概括之前原始对象所关系的函数。这种过程也称为对象编组（marshalling）。从一系列字节提取数据结构的反向操作，是反序列化（也称为解编组、deserialization、unmarshalling）。</li>
+</ul>
+
+<p>序列化在计算机科学中通常有以下定义:</p>
+
+<ul>
+<li>对同步控制而言，表示强制在同一时间内进行单一访问。</li>
+<li>在数据储存与发送的部分是指将一个对象存储至一个存储介质，例如文件或是存储器缓冲等，或者透过网络发送数据时进行编码的过程，可以是字节或是XML等格式。而字节的或XML编码格式可以还原完全相等的对象。这程序被应用在不同应用程序之间发送对象，以及服务器将对象存储到文件或数据库。相反的过程又称为反序列化。</li>
+</ul>
+
+<p>简单地说，“序列化”就是将运行时的对象状态转换成二进制，然后保存到流、内存或者通过网络传输给其他端。</p>
+
+<p>序列化参考：<a href="https://blog.csdn.net/u011240877/article/details/72455715"><br/>
+Android 进阶6：两种序列化方式 Serializable 和 Parcelable</a></p>
+
+<h3 id="toc_34">方式</h3>
+
+<p>Android中序列化方式有两种：</p>
+
+<ul>
+<li>Serializable </li>
+<li>Parcelable</li>
+</ul>
+
+<p>两者都是支持序列化和反序列化的操作。</p>
+
+<h3 id="toc_35">区别</h3>
+
+<ul>
+<li>API <code>Serializable</code>是Java API，<code>Parcelable</code>是Android的API</li>
+<li>效率<br/>
+Serializable 会使用反射，序列化和反序列化过程需要大量 I/O 操作， Parcelable 自已实现封送和解封（marshalled &amp;unmarshalled）操作不需要用反射，数据也存放在 Native 内存中，效率要快很多。</li>
+</ul>
+
+<p><figure><img src="/images/15589995967428.jpg" alt=""/></figure></p>
+
+<p><strong>总结：</strong>可以看到，Serializable 的使用比较简单，创建一个版本号即可；而 Parcelable 则相对复杂一些，会有四个方法需要实现。</p>
+
+<p>一般在保存数据到 SD 卡或者网络传输时建议使用 Serializable 即可，虽然效率差一些，好在使用方便。</p>
+
+<p>而在运行时数据传递时建议使用 Parcelable，比如 Intent，Bundle 等，Android 底层做了优化处理，效率很高。</p>
+
+<h2 id="toc_36">静态属性和静态方法是否可以被继承？是否可以被重写？以及原因？</h2>
+
+<p>参考一：<a href="https://www.cnblogs.com/kabi/p/5181941.html">https://www.cnblogs.com/kabi/p/5181941.html</a><br/>
+参考二：<a href="https://blog.csdn.net/jinyongqing/article/details/7669605">https://blog.csdn.net/jinyongqing/article/details/7669605</a></p>
+
+<h2 id="toc_37">静态内部类的设计意图</h2>
+
+<p>参考一：<a href="https://zhuanlan.zhihu.com/p/29623665">https://zhuanlan.zhihu.com/p/29623665</a></p>
+
+<h2 id="toc_38">成员内部类、静态内部类、局部内部类和匿名内部类的理解，以及项目中的应用</h2>
+
+<p>参考一：<a href="https://www.cnblogs.com/chenssy/p/3388487.html">https://www.cnblogs.com/chenssy/p/3388487.html</a></p>
+
+<h2 id="toc_39">谈谈对kotlin的理解</h2>
+
+<p>参考一：<a href="http://shinelw.com/2017/03/17/kotlin-apply-in-coding/">http://shinelw.com/2017/03/17/kotlin-apply-in-coding/</a></p>
+
+<h2 id="toc_40">闭包和局部内部类的区别</h2>
+
+<p>参考一：<a href="https://blog.csdn.net/u010412719/article/details/49453235">https://blog.csdn.net/u010412719/article/details/49453235</a></p>
+
+<h2 id="toc_41">string 转换成 integer的方式及原理</h2>
+
+<p>参考一：<a href="https://blog.csdn.net/itboy_libing/article/details/80393530">https://blog.csdn.net/itboy_libing/article/details/80393530</a></p>
+
+		</div>
+	</article>
+	<div class="share-comment">
+	 
+
+	  
+
+	  
+
+	</div>
+</div>        </div>
+			<footer id="footer" class="inner">Copyright &copy; 2014
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
+Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
+      </footer>
+		</div>
+	</div>
+
+  
+    
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+</body>
+</html>

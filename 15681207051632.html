@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>  
+	  
+  	Android事件分发机制 - 何靖的Blogs
+  	
+	</title>
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="atom.xml" rel="alternate" title="何靖的Blogs" type="application/atom+xml">
+
+	<link href="asset/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="asset/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<script src="asset/javascripts/jquery.min.js"></script>
+	<script src="asset/highlightjs/highlight.pack.js"></script>
+	<link href="asset/highlightjs/styles/solarized_dark.css" media="screen, projection" rel="stylesheet" type="text/css">
+<script>hljs.initHighlightingOnLoad();</script>
+
+	<!--[if lt IE 9]><script src="asset/javascripts/html5.js"></script><![endif]-->
+	<!-- <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'> -->
+	<style type="text/css">
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Nunito-Light'), url(asset/font/1TiHc9yag0wq3lDO9cw0voX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nunito-Regular'), url(asset/font/6TbRXKWJjpj6V2v_WyRbMX-_kf6ByYO6CLYdB4HQE-Y.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Nunito-Bold'), url(asset/font/TttUCfJ272GBgSKaOaD7KoX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+	</style>
+	
+	<style type="text/css">
+	.container .left-col{ opacity: 1;}
+	#pagenavi a{ font-size: 1.3em;}
+	#pagenavi .next:before{ top: 3px;}
+	#pagenavi .prev:before{ top: 3px;}
+	.container .mid-col .mid-col-container #content .archives .title{ font-size: 1.5em;}
+	.container .mid-col .mid-col-container #content article{ padding: 15px 0px;}
+	#header .subtitle {
+		line-height: 1.2em;
+		padding-top: 8px;
+	}
+	article pre{ background: none; border: none; padding: 0;}
+	article .entry-content{text-align: left;}
+	.share-comment{ padding: 25px 0px; clear: both;}
+	hr{ margin: 20px 0px;border: 0; border-top:solid 1px #ddd;}
+	</style>
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner">
+				 
+				 	<div class="profilepic">
+						<img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910210148.jpeg" style="width:160px;">
+					</div>
+            	
+					
+					<h1><a href="index.html">何靖的Blogs</a></h1>
+					<p class="subtitle"></p>
+					<nav id="main-nav">
+						<ul class="main">
+						
+						  <li id=""><a target="self" href="index.html">Home</a></li>
+						
+						  <li id=""><a target="_self" href="archives.html">Archives</a></li>
+						
+						</ul>
+					</nav>
+
+					<nav id="sub-nav">
+						<div class="social">
+
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/hejing-michael" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:hejing.michael@qq.com" title="Email">Email</a>
+
+								
+
+								<a class="rss" href="atom.xml" title="RSS">RSS</a>
+							
+						</div>
+					</nav>
+				</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			<div class="mid-col-container"> <div id="content" class="inner">
+
+	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+		<h1 class="title" itemprop="name">Android事件分发机制</h1>
+		<div class="entry-content" itemprop="articleBody">
+			<ul>
+<li>
+<a href="#toc_0">1、概述</a>
+</li>
+<li>
+<a href="#toc_1">2、事件分发概述</a>
+</li>
+<li>
+<a href="#toc_2">3、常用<code>MotionEvent</code>分类</a>
+</li>
+<li>
+<a href="#toc_3">3、事件产生顺序</a>
+</li>
+<li>
+<a href="#toc_4">4、Android事件扭转流程</a>
+<ul>
+<li>
+<a href="#toc_5">模拟：</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_6">5、事件分发流程及其分析</a>
+<ul>
+<li>
+<a href="#toc_7">流程图及注释</a>
+</li>
+<li>
+<a href="#toc_8">流程分析</a>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="toc_0">1、概述</h3>
+
+<p>本次分享有一个非常重要的概念：<code>View</code>，虽然说<code>View</code>不属于四大组件，但是它的作用堪比四大组件，甚至比Receiver和Provider的重要性都要大。在Android开发中，Activity承担这可视化的功能，同时Android系统提供了很多基础控件，常见的有Button、TextView、CheckBox等。很多时候仅仅使用系统提供的控件是不能满足需求的，因此我们就需要能够根据需求进行新控件的定义，而控件的自定义就需要对Android的View体系有深入的理解，只有这样才能写出完美的自定义控件。同时Android手机属于移动设备，移动设备的一个特点就是用户可以直接通过屏幕来进行一系列操作，一个典型的场景就是屏幕的滑动，用户可以通过滑动来切换到不同的界面。很多情况下我们的应用都需要支持滑动操作，当处于不同层级的View都可以响应用户的滑动操作时，就会带来一个问题，那就是滑动冲突。如何解决滑动冲突呢？这对于初学者来说的确是个头疼的问题，其实解决滑动冲突本不难，它需要读者对View的事件分发机制有一定的了解，在这个基础上，我们就可以利于这个特性从而得出滑动冲突的解决方法。</p>
+
+<blockquote>
+<p>——摘自Android开发艺术探索</p>
+</blockquote>
+
+<h3 id="toc_1">2、事件分发概述</h3>
+
+<blockquote>
+<p>事件指的是什么呢？就是指用户触摸屏幕产生的<code>Touch</code>事件；在Android中它被封装成<code>MotionEvent</code>。</p>
+</blockquote>
+
+<h3 id="toc_2">3、常用<code>MotionEvent</code>分类</h3>
+
+<ul>
+<li><strong>ACTION_DOWN：</strong>按下View（其他所有事件的开始）。</li>
+<li><strong>ACTION_UP：</strong>抬起View（与DOWN对应）。</li>
+<li><strong>ACTION_MOVE：</strong>滑动View。</li>
+<li><strong>ACTION_CANCEL：</strong>结束事件（非人为原因）。</li>
+</ul>
+
+<blockquote>
+<p>其余事件：<code>ACTION_MASK</code>、<code>ACTION_OUTSIDE</code>、<code>ACTION_POINTER_DOWN</code>、<br/>
+<code>ACTION_POINTER_UP</code>、<code>ACTION_HOVER_MOVE</code>、<code>ACTION_SCROLL</code>、<br/>
+<code>ACTION_HOVER_ENTER</code>、<code>ACTION_HOVER_EXIT</code>、<code>ACTION_BUTTON_PRESS</code>、<br/>
+<code>ACTION_BUTTON_RELEASE</code>、<code>ACTION_POINTER_INDEX_MASK</code>、<br/>
+<code>ACTION_POINTER_INDEX_SHIFT</code>；有兴趣的可以下来自己了解。</p>
+</blockquote>
+
+<h3 id="toc_3">3、事件产生顺序</h3>
+
+<p><figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910130951.png" alt=""/></figure></p>
+
+<h3 id="toc_4">4、Android事件扭转流程</h3>
+
+<h4 id="toc_5">模拟：</h4>
+
+<p>经理分派任务，下属处理这个任务的过程。</p>
+
+<ul>
+<li><p><strong>View层次示例</strong><br/>
+<figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910130953.png" alt=""/></figure></p></li>
+<li><p><strong>View内部事件处理流程图：</strong><br/>
+<figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910130952.png" alt=""/></figure></p></li>
+</ul>
+
+<h3 id="toc_6">5、事件分发流程及其分析</h3>
+
+<h4 id="toc_7">流程图及注释</h4>
+
+<p><figure><img src="https://raw.githubusercontent.com/hejing-michael/images/master/images/20190910130954.png" alt=""/></figure></p>
+
+<h4 id="toc_8">流程分析</h4>
+
+<ul>
+<li><p><strong><code>流程1</code>:在Activity#dispatchTouchEvent返回false/true</strong><br/>
+当前流程是<code>在Activity#dispatchTouchEvent</code>拦截并消费事件，不再往下传递</p>
+<blockquote>
+<p>03-26 18:54:58.178 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程2</code>:在ViewGroup#dispatchTouchEvent返回true：</strong><br/>
+当前流程是<code>ViewGroup#dispatchTouchEvent</code>拦截并消费事件，事件不再往下传递</p>
+<blockquote>
+<p>03-26 19:08:23.268 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:08:23.268 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程3</code>:在ViewGroup#dispatchTouchEvent返回false：</strong><br/>
+当前流程是停止往当前<code>ViewGroup</code>及其子<code>View</code>事件，并将当前事件交由父类<code>onTouchEvent</code>处理。</p>
+<blockquote>
+<p>03-26 19:09:15.238 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:09:15.238 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:09:15.238 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程4</code>:在ViewGroup#onInterceptTouchEvent返回true：</strong></p>
+<blockquote>
+<p>03-26 19:07:02.918 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:07:02.918 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:07:02.918 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:07:02.918 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:07:02.918 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong>在ViewGroup#onInterceptTouchEvent返回false</strong><br/>
+当前流程为系统默认流程即：ViewGroup不拦截事件，事件将往下一级传递</p>
+<blockquote>
+<p>03-26 19:06:11.008 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:06:11.018 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程5</code>:在View#dispatchTouchEvent返回true：</strong><br/>
+当前流程是<code>ViewGroup#dispatchTouchEvent</code>拦截并消费事件，事件不再往下传递</p>
+<blockquote>
+<p>03-26 19:10:41.048 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:10:41.048 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:10:41.048 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:10:41.048 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程6</code>:在View#dispatchTouchEvent返回false：</strong></p>
+<blockquote>
+<p>03-26 19:11:36.458 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:11:36.458 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:11:36.458 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:11:36.458 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:11:36.458 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:11:36.458 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程7</code>:在View#onTouchEvent返回true：</strong></p>
+<blockquote>
+<p>03-26 19:12:51.688 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:12:51.688 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:12:51.688 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:12:51.688 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:12:51.688 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong>在View#onTouchEvent返回false：</strong><br/>
+当前流程为系统默认流程</p>
+<blockquote>
+<p>03-26 19:13:58.188 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:13:58.188 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程8</code>:在ViewGroup#onTouchEvent返回true：</strong></p>
+<blockquote>
+<p>03-26 19:15:14.608 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:15:14.608 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:15:14.608 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:15:14.608 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:15:14.608 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:15:14.608 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong>在ViewGroup#onTouchEvent返回false：</strong><br/>
+当前流程为系统默认流程</p>
+<blockquote>
+<p>03-26 19:16:48.928 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:16:48.928 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong><code>流程9</code>:在Activity#onTouchEvent返回true：</strong></p>
+<blockquote>
+<p>03-26 19:18:49.648 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:18:49.648 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+<li><p><strong>在Activity#onTouchEvent返回false：</strong><br/>
+当前流程为系统默认流程</p>
+<blockquote>
+<p>03-26 19:20:07.738 com.android.api23 I/com.android.api23.MainActivity: dispatchTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MyViewGroup: dispatchTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MyViewGroup: onInterceptTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MyView: dispatchTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MyView: onTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MyViewGroup: onTouchEvent#event:0<br/>
+03-26 19:20:07.738 com.android.api23 I/com.android.api23.MainActivity: onTouchEvent#event:0</p>
+</blockquote></li>
+</ul>
+
+<p><a href="https://github.com/hejing-michael/AndroidApi23.git">AndroidApi23</a>：Android事件分发机制测试Demo</p>
+
+		</div>
+	</article>
+	<div class="share-comment">
+	 
+
+	  
+
+	  
+
+	</div>
+</div>        </div>
+			<footer id="footer" class="inner">Copyright &copy; 2014
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
+Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
+      </footer>
+		</div>
+	</div>
+
+  
+    
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+</body>
+</html>
